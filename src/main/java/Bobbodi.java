@@ -19,18 +19,20 @@ public class Bobbodi {
     public static final String BLUE = "\u001B[34m";
     public static final String GREEN = "\u001B[32m";
     public static final String PURPLE = "\u001B[35m";
+    public static final String SEPARATOR = BLUE + DASHES + RESET;
+
+    public static void chatbotSays(String text) {
+        System.out.println(SEPARATOR);
+        System.out.println(PURPLE + text + RESET);
+        System.out.println(SEPARATOR);
+    }
 
     public static void greeting() {
-        System.out.println(BLUE + DASHES + RESET);
-        System.out.println(PURPLE + "Hello! I'm " + CHATBOT_NAME + RESET);
-        System.out.println(PURPLE + "What can I do for you?" + RESET);
-        System.out.println(BLUE + DASHES + RESET);
+        chatbotSays("Hello! I'm " + CHATBOT_NAME + "\nWhat can I do for you?");
     }
 
     public static void bye() {
-        System.out.println(BLUE + DASHES + RESET);
-        System.out.println(PURPLE + "Bye. Hope to see you again soon!" + RESET);
-        System.out.println(BLUE + DASHES + RESET);
+        chatbotSays("Bye. Hope to see you again soon!");
     }
 
     public static void interact() {
@@ -39,11 +41,8 @@ public class Bobbodi {
 
         while (!userInput.equalsIgnoreCase("bye")) {
             userInput = scanner.nextLine().trim();
-            //System.out.println(PURPLE + userInput + RESET);
             if (!userInput.equalsIgnoreCase("bye")) {
-                System.out.println(BLUE + DASHES + RESET);
-                System.out.println(PURPLE + userInput + RESET);
-                System.out.println(BLUE + DASHES + RESET);
+                chatbotSays(userInput);
             }
         }
 
