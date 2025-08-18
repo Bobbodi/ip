@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bobbodi {
     public static void main(String[] args) {
@@ -20,6 +22,19 @@ public class Bobbodi {
     public static final String GREEN = "\u001B[32m";
     public static final String PURPLE = "\u001B[35m";
     public static final String SEPARATOR = BLUE + DASHES + RESET;
+    public static final List<String> LIST = new ArrayList<String>();
+
+    public static String formatLIST() {
+        StringBuilder text = new StringBuilder();
+        for (int i = 0; i < LIST.size(); i++) {
+            String numbering = String.format("%2d. ", i+1);
+            text.append(numbering).append(LIST.get(i));
+            if (i < LIST.size() - 1) {
+                text.append("\n");
+            }
+        }
+        return text.toString();
+    }
 
     public static void chatbotSays(String text) {
         System.out.println(SEPARATOR);
@@ -41,8 +56,11 @@ public class Bobbodi {
 
         while (!userInput.equalsIgnoreCase("bye")) {
             userInput = scanner.nextLine().trim();
-            if (!userInput.equalsIgnoreCase("bye")) {
-                chatbotSays(userInput);
+            if (userInput.equalsIgnoreCase("list")) {
+                chatbotSays(formatLIST());
+            } else if (!userInput.equalsIgnoreCase("bye")) {
+                chatbotSays("added: " + userInput);
+                LIST.add(userInput);
             }
         }
 
