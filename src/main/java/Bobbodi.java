@@ -22,7 +22,7 @@ public class Bobbodi {
     public static final String GREEN = "\u001B[32m";
     public static final String PURPLE = "\u001B[35m";
     public static final String SEPARATOR = BLUE + DASHES + RESET;
-    public static final List<String> LIST = new ArrayList<String>();
+    public static final List<Task> LIST = new ArrayList<Task>();
 
     public static String formatLIST() {
         StringBuilder text = new StringBuilder();
@@ -60,7 +60,7 @@ public class Bobbodi {
                 chatbotSays(formatLIST());
             } else if (!userInput.equalsIgnoreCase("bye")) {
                 chatbotSays("added: " + userInput);
-                LIST.add(userInput);
+                LIST.add(new Task(userInput));
             }
         }
 
