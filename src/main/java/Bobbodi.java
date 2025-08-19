@@ -1,8 +1,4 @@
-import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Bobbodi {
     public static void main(String[] args) {
@@ -17,67 +13,12 @@ public class Bobbodi {
         bye();
     }
 
-    public final static String DASHES = "---------------------------------------------";
-    public final static String CHATBOT_NAME = "Bobbodi";
-    public static final String RESET = "\u001B[0m";
-    public static final String BLUE = "\u001B[34m";
-    public static final String GREEN = "\u001B[32m";
-    public static final String PURPLE = "\u001B[35m";
-    public static final String SEPARATOR = BLUE + DASHES + RESET;
-    public static final List<Task> LIST = new ArrayList<Task>();
-
-    public static String formatLIST() {
-        StringBuilder text = new StringBuilder();
-        for (int i = 0; i < LIST.size(); i++) {
-            String numbering = String.format("%2d. ", i+1);
-            text.append(numbering).append(LIST.get(i));
-            if (i < LIST.size() - 1) {
-                text.append("\n");
-            }
-        }
-        return text.toString();
-    }
-
-    public static void chatbotSays(String text) {
-        System.out.println(SEPARATOR);
-        System.out.println(PURPLE + text + RESET);
-        System.out.println(SEPARATOR);
-    }
-
-    public static boolean isNumeric(String text) {
-        ParsePosition pos = new ParsePosition(0);
-        NumberFormat.getInstance().parse(text, pos);
-        return text.length() == pos.getIndex();
-    }
-
-    public static boolean validTaskNumber(String str) {
-        return Integer.parseInt(str) <= LIST.size() &&
-                Integer.parseInt(str) > 0;
-    }
-    public static boolean isMark(String userInput) {
-        //e.g. mark 2
-        String[] words = userInput.split(" ");
-        return words[0].equalsIgnoreCase("mark") &&
-                isNumeric(words[1]) &&
-                words.length == 2 &&
-                validTaskNumber(words[1]);
-    }
-
-    public static boolean isUnmark(String userInput) {
-        //e.g. mark 2
-        String[] words = userInput.split(" ");
-        return words[0].equalsIgnoreCase("unmark") &&
-                isNumeric(words[1]) &&
-                words.length == 2 &&
-                validTaskNumber(words[1]);
-    }
-
     public static void greeting() {
-        chatbotSays("Hello! I'm " + CHATBOT_NAME + "\nWhat can I do for you?");
+        Helper.chatbotSays("Hello! I'm " + Constants.CHATBOT_NAME + "\nWhat can I do for you?");
     }
 
     public static void bye() {
-        chatbotSays("Bye. Hope to see you again soon!");
+        Helper.chatbotSays("Bye. Hope to see you again soon!");
     }
 
     public static void interact() {
@@ -87,25 +28,58 @@ public class Bobbodi {
         while (!userInput.equalsIgnoreCase("bye")) {
             userInput = scanner.nextLine().trim();
             if (userInput.equalsIgnoreCase("list")) {
-                chatbotSays(formatLIST());
+                Helper.chatbotSays(Helper.formatLIST());
 
-            } else if (isMark(userInput)) {
+            } else if (Helper.isMark(userInput)) {
                 String[] words = userInput.split(" ");
                 int taskNumber = Integer.parseInt(words[1]) - 1;
-                LIST.get(taskNumber).markDone();
-                chatbotSays("Nice! I've marked this task as done:\n"
-                        + LIST.get(taskNumber));
+                Constants.LIST.get(taskNumber).markDone();
+                Helper.chatbotSays("Nice! I've marked this task as done:\n"
+                        + Constants.LIST.get(taskNumber));
 
-            } else if (isUnmark(userInput)) {
+            } else if (Helper.isUnmark(userInput)) {
                 String[] words = userInput.split(" ");
                 int taskNumber = Integer.parseInt(words[1]) - 1;
-                LIST.get(taskNumber).markNotDone();
-                chatbotSays("Ok, I've marked this task as not done yet:\n"
-                        + LIST.get(taskNumber));
+                Constants.LIST.get(taskNumber).markNotDone();
+                Helper.chatbotSays("Ok, I've marked this task as not done yet:\n"
+                        + Constants.LIST.get(taskNumber));
+
+            } else if (Helper.isTodo(userInput)) {
+                String[] words = userInput.split(" ");
+                Todo newTodo = new Todo(words[1]);
+                Constants.LIST.add(newTodo);
+
+                Helper.chatbotSays("Got it. I've added this task: \n\t" +
+                        newTodo + "\n" +
+                        Helper.tasksLeft(Constants.LIST.size()));
+
+            } else if (Helper.isDeadline(userInput)) {
+                String[] words = userInput.split("/");
+                String description = words[0].replaceFirst("deadline", "").trim();
+                String by = words[1].replaceFirst("by", "").trim();
+                Deadline newDeadline = new Deadline(description, by);
+                Constants.LIST.add(newDeadline);
+
+                Helper.chatbotSays("Got it. I've added this task: \n\t" +
+                        newDeadline + "\n" +
+                        Helper.tasksLeft(Constants.LIST.size()));
+
+            } else if (Helper.isEvent(userInput)) {
+                String[] words = userInput.split("/");
+                String description = words[0].replaceFirst("event", "").trim();
+                String from = words[1].replaceFirst("from", "").trim();
+                String to = words[2].replaceFirst("to", "").trim();
+
+                Event newEvent = new Event(description, from, to);
+                Constants.LIST.add(newEvent);
+
+                Helper.chatbotSays("Got it. I've added this task: \n\t" +
+                        newEvent + "\n" +
+                        Helper.tasksLeft(Constants.LIST.size()));
 
             } else if (!userInput.equalsIgnoreCase("bye")) {
-                chatbotSays("added: " + userInput);
-                LIST.add(new Task(userInput));
+                Helper.chatbotSays("added: " + userInput);
+                Constants.LIST.add(new Task(userInput));
             }
         }
 

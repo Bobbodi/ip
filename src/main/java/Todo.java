@@ -1,10 +1,13 @@
-public class Deadline extends Task {
+public class Todo extends Task {
 
     protected String by;
 
-    public Deadline(String description, String by) {
+    public Todo(String description) {
         super(description);
-        this.by = by;
+    }
+
+    public String toString() {
+        return "[T]" + super.toString();
     }
 
 
