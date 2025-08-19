@@ -4,8 +4,9 @@ import java.text.ParsePosition;
 public class Helper {
     public static String formatLIST() {
         StringBuilder text = new StringBuilder();
+        text.append("Here are the tasks in your list:\n");
         for (int i = 0; i < Constants.LIST.size(); i++) {
-            String numbering = String.format("%2d. ", i+1);
+            String numbering = String.format("\t%2d. ", i+1);
             text.append(numbering).append(Constants.LIST.get(i));
             if (i < Constants.LIST.size() - 1) {
                 text.append("\n");
@@ -34,8 +35,8 @@ public class Helper {
         //e.g. mark 2
         String[] words = userInput.split(" ");
         return words[0].equalsIgnoreCase("mark") &&
-                isNumeric(words[1]) &&
                 words.length == 2 &&
+                isNumeric(words[1]) &&
                 validTaskNumber(words[1]);
     }
 
@@ -43,8 +44,8 @@ public class Helper {
         //e.g. unmark 2
         String[] words = userInput.split(" ");
         return words[0].equalsIgnoreCase("unmark") &&
-                isNumeric(words[1]) &&
                 words.length == 2 &&
+                isNumeric(words[1]) &&
                 validTaskNumber(words[1]);
     }
 
@@ -86,7 +87,7 @@ public class Helper {
         if (num == 1) {
             taskGrammer = "task";
         }
-        return "Now you have " + num + " " + taskGrammer + " in the list";
+        return "Now you have " + num + " " + taskGrammer + " in the list.";
     }
 
 }

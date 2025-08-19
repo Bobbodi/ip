@@ -25,31 +25,33 @@ public class Bobbodi {
         String userInput = "";
         Scanner scanner = new Scanner(System.in);
 
-        while (!userInput.equalsIgnoreCase("bye")) {
+        while (scanner.hasNextLine()) {
             userInput = scanner.nextLine().trim();
-            if (userInput.equalsIgnoreCase("list")) {
+            if (userInput.equalsIgnoreCase("bye")) {
+              break;
+            } else if (userInput.equalsIgnoreCase("list")) {
                 Helper.chatbotSays(Helper.formatLIST());
 
             } else if (Helper.isMark(userInput)) {
                 String[] words = userInput.split(" ");
                 int taskNumber = Integer.parseInt(words[1]) - 1;
                 Constants.LIST.get(taskNumber).markDone();
-                Helper.chatbotSays("Nice! I've marked this task as done:\n"
+                Helper.chatbotSays("Nice! I've marked this task as done:\n\t"
                         + Constants.LIST.get(taskNumber));
 
             } else if (Helper.isUnmark(userInput)) {
                 String[] words = userInput.split(" ");
                 int taskNumber = Integer.parseInt(words[1]) - 1;
                 Constants.LIST.get(taskNumber).markNotDone();
-                Helper.chatbotSays("Ok, I've marked this task as not done yet:\n"
+                Helper.chatbotSays("OK, I've marked this task as not done yet:\n\t"
                         + Constants.LIST.get(taskNumber));
 
             } else if (Helper.isTodo(userInput)) {
-                String[] words = userInput.split(" ");
-                Todo newTodo = new Todo(words[1]);
+                String description = userInput.replaceFirst("todo", "").trim();
+                Todo newTodo = new Todo(description);
                 Constants.LIST.add(newTodo);
 
-                Helper.chatbotSays("Got it. I've added this task: \n\t" +
+                Helper.chatbotSays("Got it. I've added this task:\n\t" +
                         newTodo + "\n" +
                         Helper.tasksLeft(Constants.LIST.size()));
 
@@ -60,7 +62,7 @@ public class Bobbodi {
                 Deadline newDeadline = new Deadline(description, by);
                 Constants.LIST.add(newDeadline);
 
-                Helper.chatbotSays("Got it. I've added this task: \n\t" +
+                Helper.chatbotSays("Got it. I've added this task:\n\t" +
                         newDeadline + "\n" +
                         Helper.tasksLeft(Constants.LIST.size()));
 
@@ -73,7 +75,7 @@ public class Bobbodi {
                 Event newEvent = new Event(description, from, to);
                 Constants.LIST.add(newEvent);
 
-                Helper.chatbotSays("Got it. I've added this task: \n\t" +
+                Helper.chatbotSays("Got it. I've added this task:\n\t" +
                         newEvent + "\n" +
                         Helper.tasksLeft(Constants.LIST.size()));
 

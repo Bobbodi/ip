@@ -1,16 +1,16 @@
 public class Event extends Task {
 
-    protected String by;
     protected String from;
+    protected String to;
 
-    public Event(String description, String by, String from) {
+    public Event(String description, String from, String to) {
         super(description);
-        this.by = by;
         this.from = from;
+        this.to = to;
     }
 
     public String toString() {
-        String formatted = String.format(" (from: %s to: %s)", this.from, this.by);
+        String formatted = String.format(" (from: %s to: %s)", this.from, this.to);
         return "[E]" + super.toString() + formatted;
     }
 }
