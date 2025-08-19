@@ -1,3 +1,5 @@
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,34 @@ public class Bobbodi {
         System.out.println(SEPARATOR);
     }
 
+    public static boolean isNumeric(String text) {
+        ParsePosition pos = new ParsePosition(0);
+        NumberFormat.getInstance().parse(text, pos);
+        return text.length() == pos.getIndex();
+    }
+
+    public static boolean validTaskNumber(String str) {
+        return Integer.parseInt(str) <= LIST.size() &&
+                Integer.parseInt(str) > 0;
+    }
+    public static boolean isMark(String userInput) {
+        //e.g. mark 2
+        String[] words = userInput.split(" ");
+        return words[0].equalsIgnoreCase("mark") &&
+                isNumeric(words[1]) &&
+                words.length == 2 &&
+                validTaskNumber(words[1]);
+    }
+
+    public static boolean isUnmark(String userInput) {
+        //e.g. mark 2
+        String[] words = userInput.split(" ");
+        return words[0].equalsIgnoreCase("unmark") &&
+                isNumeric(words[1]) &&
+                words.length == 2 &&
+                validTaskNumber(words[1]);
+    }
+
     public static void greeting() {
         chatbotSays("Hello! I'm " + CHATBOT_NAME + "\nWhat can I do for you?");
     }
@@ -58,6 +88,21 @@ public class Bobbodi {
             userInput = scanner.nextLine().trim();
             if (userInput.equalsIgnoreCase("list")) {
                 chatbotSays(formatLIST());
+
+            } else if (isMark(userInput)) {
+                String[] words = userInput.split(" ");
+                int taskNumber = Integer.parseInt(words[1]) - 1;
+                LIST.get(taskNumber).markDone();
+                chatbotSays("Nice! I've marked this task as done:\n"
+                        + LIST.get(taskNumber));
+
+            } else if (isUnmark(userInput)) {
+                String[] words = userInput.split(" ");
+                int taskNumber = Integer.parseInt(words[1]) - 1;
+                LIST.get(taskNumber).markNotDone();
+                chatbotSays("Ok, I've marked this task as not done yet:\n"
+                        + LIST.get(taskNumber));
+
             } else if (!userInput.equalsIgnoreCase("bye")) {
                 chatbotSays("added: " + userInput);
                 LIST.add(new Task(userInput));

@@ -20,6 +20,14 @@ public class Task {
         return isDone;
     }
 
+    public void markDone() {
+        isDone = true;
+    }
+
+    public void markNotDone() {
+        isDone = false;
+    }
+
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
     }
