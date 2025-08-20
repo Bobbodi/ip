@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Constants {
+
     public final static String DASHES = "---------------------------------------------";
     public final static String CHATBOT_NAME = "Bobbodi";
     public static final String RESET = "\u001B[0m";

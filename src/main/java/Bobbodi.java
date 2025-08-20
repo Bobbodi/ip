@@ -40,18 +40,27 @@ public class Bobbodi {
                     Helper.chatbotSays(Helper.formatLIST());
 
                 } else if (Helper.isMark(userInput)) {
-                    String[] words = userInput.split(" ");
+                    String[] words = userInput.split("\\s+");
                     int taskNumber = Integer.parseInt(words[1]) - 1;
                     Constants.LIST.get(taskNumber).markDone();
                     Helper.chatbotSays("Nice! I've marked this task as done:\n\t"
                             + Constants.LIST.get(taskNumber));
 
                 } else if (Helper.isUnmark(userInput)) {
-                    String[] words = userInput.split(" ");
+                    String[] words = userInput.split("\\s+");
                     int taskNumber = Integer.parseInt(words[1]) - 1;
                     Constants.LIST.get(taskNumber).markNotDone();
                     Helper.chatbotSays("OK, I've marked this task as not done yet:\n\t"
                             + Constants.LIST.get(taskNumber));
+
+                } else if (Helper.isDelete(userInput)) {
+                    String[] words = userInput.split("\\s+");
+                    int taskNumber = Integer.parseInt(words[1]) - 1;
+                    Task deletedTask = Constants.LIST.remove(taskNumber);
+                    Helper.chatbotSays("Noted. I've removed this task:\n\t" +
+                            deletedTask + "\n" +
+                            Helper.tasksLeft(Constants.LIST.size())
+                    );
 
                 } else if (Helper.isTodo(userInput)) {
                     String description = userInput.replaceFirst("todo", "").trim();
@@ -90,10 +99,10 @@ public class Bobbodi {
                     Helper.chatbotSays("added: " + userInput);
                     Constants.LIST.add(new Task(userInput));
                 }
-            } catch (IncorrectFormatException | MissingArgumentException | InvalidTaskNumberException e) {
+            } catch (IncorrectFormatException | MissingArgumentException | InvalidTaskNumberException | EmptyListException e) {
                 Helper.chatbotSays(e.getMessage());
             } catch (Exception e) {
-                Helper.chatbotSays("An unexpected error occured. " + e.getMessage());
+                Helper.chatbotSays("An unexpected error occurred. " + e.getMessage());
             }
         }
         scanner.close();

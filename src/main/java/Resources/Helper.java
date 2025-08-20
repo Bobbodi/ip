@@ -7,6 +7,10 @@ import java.text.ParsePosition;
 
 public class Helper {
     public static String formatLIST() {
+        if (Constants.LIST.isEmpty()) {
+            return "There are no tasks to display!";
+        }
+
         StringBuilder text = new StringBuilder();
         text.append("Here are the tasks in your list:\n");
         for (int i = 0; i < Constants.LIST.size(); i++) {
@@ -42,7 +46,7 @@ public class Helper {
 
     public static boolean isMark(String userInput) throws MissingArgumentException {
         //e.g. mark 2
-        String[] words = userInput.split(" ");
+        String[] words = userInput.split("\\s+");
         if (words[0].equalsIgnoreCase("mark")) {
             if (words.length == 2) {
                 return isNumeric(words[1]) &&
@@ -56,13 +60,38 @@ public class Helper {
 
     public static boolean isUnmark(String userInput) throws MissingArgumentException{
         //e.g. unmark 2
-        String[] words = userInput.split(" ");
+        String[] words = userInput.split("\\s+");
         if (words[0].equalsIgnoreCase("unmark")) {
             if (words.length == 2) {
                 return isNumeric(words[1]) &&
                         validTaskNumber(words[1]);
             } else {
                 throw new MissingArgumentException("Missing task number. Format: unmark [task number from 1 to n]");
+            }
+        }
+        return false;
+    }
+
+    public static boolean validTaskNumberForDelete(String str) throws InvalidTaskNumberException {
+        if (Constants.LIST.isEmpty()) {
+            throw new EmptyListException("There are no tasks to delete!");
+        } else if (Integer.parseInt(str) <= Constants.LIST.size() &&
+                Integer.parseInt(str) > 0) {
+            return true;
+        } else {
+            throw new InvalidTaskNumberException(String.format("%s is not a valid task number.", str));
+        }
+    }
+
+    public static boolean isDelete(String userInput) throws MissingArgumentException{
+        //e.g. delete 2
+        String[] words = userInput.split(" ");
+        if (words[0].equalsIgnoreCase("delete")) {
+            if (words.length == 2) {
+                return isNumeric(words[1]) &&
+                        validTaskNumberForDelete(words[1]);
+            } else {
+                throw new MissingArgumentException("Missing task number. Format: delete [task number from 1 to n]");
             }
         }
         return false;
