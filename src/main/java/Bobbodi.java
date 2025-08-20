@@ -18,11 +18,11 @@ public class Bobbodi {
     }
 
     public static void greeting() {
-        Helper.chatbotSays("Hello! I'm " + Constants.CHATBOT_NAME + "\nWhat can I do for you?");
+        Helper.chatbotSays(Constants.HELLO);
     }
 
     public static void bye() {
-        Helper.chatbotSays("Bye. Hope to see you again soon!");
+        Helper.chatbotSays(Constants.BYE);
     }
 
     public static void interact() {
@@ -43,21 +43,21 @@ public class Bobbodi {
                     String[] words = userInput.split("\\s+");
                     int taskNumber = Integer.parseInt(words[1]) - 1;
                     Constants.LIST.get(taskNumber).markDone();
-                    Helper.chatbotSays("Nice! I've marked this task as done:\n\t"
+                    Helper.chatbotSays(Constants.MARKASDONE
                             + Constants.LIST.get(taskNumber));
 
                 } else if (Helper.isUnmark(userInput)) {
                     String[] words = userInput.split("\\s+");
                     int taskNumber = Integer.parseInt(words[1]) - 1;
                     Constants.LIST.get(taskNumber).markNotDone();
-                    Helper.chatbotSays("OK, I've marked this task as not done yet:\n\t"
+                    Helper.chatbotSays(Constants.MARKNOTDONE
                             + Constants.LIST.get(taskNumber));
 
                 } else if (Helper.isDelete(userInput)) {
                     String[] words = userInput.split("\\s+");
                     int taskNumber = Integer.parseInt(words[1]) - 1;
                     Task deletedTask = Constants.LIST.remove(taskNumber);
-                    Helper.chatbotSays("Noted. I've removed this task:\n\t" +
+                    Helper.chatbotSays(Constants.REMOVETASK +
                             deletedTask + "\n" +
                             Helper.tasksLeft(Constants.LIST.size())
                     );
@@ -67,7 +67,7 @@ public class Bobbodi {
                     Todo newTodo = new Todo(description);
                     Constants.LIST.add(newTodo);
 
-                    Helper.chatbotSays("Got it. I've added this task:\n\t" +
+                    Helper.chatbotSays(Constants.ADDTASK +
                             newTodo + "\n" +
                             Helper.tasksLeft(Constants.LIST.size()));
 
@@ -78,7 +78,7 @@ public class Bobbodi {
                     Deadline newDeadline = new Deadline(description, by);
                     Constants.LIST.add(newDeadline);
 
-                    Helper.chatbotSays("Got it. I've added this task:\n\t" +
+                    Helper.chatbotSays(Constants.ADDTASK +
                             newDeadline + "\n" +
                             Helper.tasksLeft(Constants.LIST.size()));
 
@@ -91,12 +91,12 @@ public class Bobbodi {
                     Event newEvent = new Event(description, from, to);
                     Constants.LIST.add(newEvent);
 
-                    Helper.chatbotSays("Got it. I've added this task:\n\t" +
+                    Helper.chatbotSays(Constants.ADDTASK +
                             newEvent + "\n" +
                             Helper.tasksLeft(Constants.LIST.size()));
 
                 } else if (!userInput.equalsIgnoreCase("bye")) {
-                    Helper.chatbotSays("added: " + userInput);
+                    Helper.chatbotSays(Constants.ADDED + userInput);
                     Constants.LIST.add(new Task(userInput));
                 }
             } catch (IncorrectFormatException | MissingArgumentException | InvalidTaskNumberException | EmptyListException e) {
