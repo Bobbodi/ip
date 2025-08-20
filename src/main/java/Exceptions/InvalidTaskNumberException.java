@@ -1,8 +1,8 @@
 package Exceptions;
 
-public class BobbodiException extends RuntimeException {
+public class InvalidTaskNumberException extends BobbodiException {
 
-    public BobbodiException(String msg) {
+    public InvalidTaskNumberException(String msg) {
         super(msg);
     }
 

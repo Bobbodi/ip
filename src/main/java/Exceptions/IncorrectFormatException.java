@@ -1,8 +1,8 @@
 package Exceptions;
 
-public class MissingArgumentException extends BobbodiException {
+public class IncorrectFormatException extends BobbodiException {
 
-    public MissingArgumentException(String msg) {
+    public IncorrectFormatException(String msg) {
         super(msg);
     }
 

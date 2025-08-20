@@ -1,8 +1,8 @@
 package Exceptions;
 
-public class BobbodiException extends RuntimeException {
+public class MissingArgumentException extends BobbodiException {
 
-    public BobbodiException(String msg) {
+    public MissingArgumentException(String msg) {
         super(msg);
     }
 

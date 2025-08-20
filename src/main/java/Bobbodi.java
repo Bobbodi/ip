@@ -1,3 +1,7 @@
+import Exceptions.*;
+import Tasks.*;
+import Resources.*;
+
 import java.util.Scanner;
 
 public class Bobbodi {
@@ -28,63 +32,70 @@ public class Bobbodi {
         while (scanner.hasNextLine()) {
             userInput = scanner.nextLine().trim();
             if (userInput.equalsIgnoreCase("bye")) {
-              break;
-            } else if (userInput.equalsIgnoreCase("list")) {
-                Helper.chatbotSays(Helper.formatLIST());
+                break;
+            }
 
-            } else if (Helper.isMark(userInput)) {
-                String[] words = userInput.split(" ");
-                int taskNumber = Integer.parseInt(words[1]) - 1;
-                Constants.LIST.get(taskNumber).markDone();
-                Helper.chatbotSays("Nice! I've marked this task as done:\n\t"
-                        + Constants.LIST.get(taskNumber));
+            try {
+                if (userInput.equalsIgnoreCase("list")) {
+                    Helper.chatbotSays(Helper.formatLIST());
 
-            } else if (Helper.isUnmark(userInput)) {
-                String[] words = userInput.split(" ");
-                int taskNumber = Integer.parseInt(words[1]) - 1;
-                Constants.LIST.get(taskNumber).markNotDone();
-                Helper.chatbotSays("OK, I've marked this task as not done yet:\n\t"
-                        + Constants.LIST.get(taskNumber));
+                } else if (Helper.isMark(userInput)) {
+                    String[] words = userInput.split(" ");
+                    int taskNumber = Integer.parseInt(words[1]) - 1;
+                    Constants.LIST.get(taskNumber).markDone();
+                    Helper.chatbotSays("Nice! I've marked this task as done:\n\t"
+                            + Constants.LIST.get(taskNumber));
 
-            } else if (Helper.isTodo(userInput)) {
-                String description = userInput.replaceFirst("todo", "").trim();
-                Todo newTodo = new Todo(description);
-                Constants.LIST.add(newTodo);
+                } else if (Helper.isUnmark(userInput)) {
+                    String[] words = userInput.split(" ");
+                    int taskNumber = Integer.parseInt(words[1]) - 1;
+                    Constants.LIST.get(taskNumber).markNotDone();
+                    Helper.chatbotSays("OK, I've marked this task as not done yet:\n\t"
+                            + Constants.LIST.get(taskNumber));
 
-                Helper.chatbotSays("Got it. I've added this task:\n\t" +
-                        newTodo + "\n" +
-                        Helper.tasksLeft(Constants.LIST.size()));
+                } else if (Helper.isTodo(userInput)) {
+                    String description = userInput.replaceFirst("todo", "").trim();
+                    Todo newTodo = new Todo(description);
+                    Constants.LIST.add(newTodo);
 
-            } else if (Helper.isDeadline(userInput)) {
-                String[] words = userInput.split("/");
-                String description = words[0].replaceFirst("deadline", "").trim();
-                String by = words[1].replaceFirst("by", "").trim();
-                Deadline newDeadline = new Deadline(description, by);
-                Constants.LIST.add(newDeadline);
+                    Helper.chatbotSays("Got it. I've added this task:\n\t" +
+                            newTodo + "\n" +
+                            Helper.tasksLeft(Constants.LIST.size()));
 
-                Helper.chatbotSays("Got it. I've added this task:\n\t" +
-                        newDeadline + "\n" +
-                        Helper.tasksLeft(Constants.LIST.size()));
+                } else if (Helper.isDeadline(userInput)) {
+                    String[] words = userInput.split("/");
+                    String description = words[0].replaceFirst("deadline", "").trim();
+                    String by = words[1].replaceFirst("by", "").trim();
+                    Deadline newDeadline = new Deadline(description, by);
+                    Constants.LIST.add(newDeadline);
 
-            } else if (Helper.isEvent(userInput)) {
-                String[] words = userInput.split("/");
-                String description = words[0].replaceFirst("event", "").trim();
-                String from = words[1].replaceFirst("from", "").trim();
-                String to = words[2].replaceFirst("to", "").trim();
+                    Helper.chatbotSays("Got it. I've added this task:\n\t" +
+                            newDeadline + "\n" +
+                            Helper.tasksLeft(Constants.LIST.size()));
 
-                Event newEvent = new Event(description, from, to);
-                Constants.LIST.add(newEvent);
+                } else if (Helper.isEvent(userInput)) {
+                    String[] words = userInput.split("/");
+                    String description = words[0].replaceFirst("event", "").trim();
+                    String from = words[1].replaceFirst("from", "").trim();
+                    String to = words[2].replaceFirst("to", "").trim();
 
-                Helper.chatbotSays("Got it. I've added this task:\n\t" +
-                        newEvent + "\n" +
-                        Helper.tasksLeft(Constants.LIST.size()));
+                    Event newEvent = new Event(description, from, to);
+                    Constants.LIST.add(newEvent);
 
-            } else if (!userInput.equalsIgnoreCase("bye")) {
-                Helper.chatbotSays("added: " + userInput);
-                Constants.LIST.add(new Task(userInput));
+                    Helper.chatbotSays("Got it. I've added this task:\n\t" +
+                            newEvent + "\n" +
+                            Helper.tasksLeft(Constants.LIST.size()));
+
+                } else if (!userInput.equalsIgnoreCase("bye")) {
+                    Helper.chatbotSays("added: " + userInput);
+                    Constants.LIST.add(new Task(userInput));
+                }
+            } catch (IncorrectFormatException | MissingArgumentException | InvalidTaskNumberException e) {
+                Helper.chatbotSays(e.getMessage());
+            } catch (Exception e) {
+                Helper.chatbotSays("An unexpected error occured. " + e.getMessage());
             }
         }
-
         scanner.close();
     }
 
