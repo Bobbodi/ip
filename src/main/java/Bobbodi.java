@@ -2,7 +2,10 @@ import Exceptions.*;
 import Tasks.*;
 import Resources.*;
 
+import java.util.Arrays;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Bobbodi {
     public static void main(String[] args) {
@@ -13,12 +16,53 @@ public class Bobbodi {
                 + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("Hello from\n" + logo);
         greeting();
+        loadfile("data.txt");
         interact();
         bye();
     }
 
     public static void greeting() {
         Helper.chatbotSays(Constants.HELLO);
+    }
+
+    public static void loadfile(String filePath) {
+        try {
+            Helper.chatbotSays(String.format("Reading file %s...", filePath));
+            File f = new File(filePath);
+            Scanner s = new Scanner(f);
+            while (s.hasNext()) {
+                String line = s.nextLine();
+                String[] parts = line.split(" - ");
+                Helper.validateFileLine(parts);
+                switch (parts[0]) {
+                    case "T":
+                        Todo todo = new Todo(parts[2]);
+                        todo.setDone(parts[1]);
+                        Constants.LIST.add(todo);
+                        break;
+                    case "D":
+                        Helper.validateFileLine_Deadline(parts);
+                        Deadline deadline = new Deadline(parts[2], parts[3]);
+                        deadline.setDone(parts[1]);
+                        Constants.LIST.add(deadline);
+                        break;
+                    case "E":
+                        Helper.validateFileLine_Event(parts);
+                        Event event = new Event(parts[2], parts[3], parts[4]);
+                        event.setDone(parts[1]);
+                        Constants.LIST.add(event);
+                        break;
+                    default:
+                        throw new IncorrectFormatException(String.format("Unknown task type %s", parts[0]));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            Helper.chatbotSays(String.format("File %s not found", filePath));
+        } catch (IncorrectFormatException | InvalidTaskNumberException | MissingArgumentException e) {
+            Helper.chatbotSays(e.getMessage());
+        } finally {
+            Helper.chatbotSays(Constants.LOADED);
+        }
     }
 
     public static void bye() {
@@ -109,3 +153,4 @@ public class Bobbodi {
     }
 
 }
+

@@ -177,4 +177,36 @@ public class Helper {
         return "Now you have " + num + " " + taskGrammer + " in the list.";
     }
 
+    public static Boolean isBinary(String num) {
+        if (num.equalsIgnoreCase("1") || num.equalsIgnoreCase("0")) {
+            return true;
+        } else {
+            throw new InvalidTaskNumberException(String.format("Cannot read %d. Use 1 or 0 for task completion", num));
+        }
+    }
+
+    public static void validateFileLine(String[] parts) {
+        if (parts.length < 3) {
+            throw new IncorrectFormatException("Line is invalid. Please use: [Task type] | [Completion status] | [Task description]");
+        }
+        if (!parts[1].equalsIgnoreCase("1") && !parts[1].equalsIgnoreCase("0")) {
+            throw new InvalidTaskNumberException(String.format("Cannot read %s. Use 1 or 0 for task completion", parts[1]));
+        }
+        if (parts[2].isEmpty()) {
+            throw new IncorrectFormatException("Task description cannot be empty");
+        }
+    }
+
+    public static void validateFileLine_Deadline(String[] parts) {
+        if (parts.length < 4) {
+            throw new IncorrectFormatException("Line is invalid for task type 'Deadline'. Please use: [Task type] | [Completion status] | [Task description] | [by date]");
+        }
+    }
+
+    public static void validateFileLine_Event(String[] parts) {
+        if (parts.length < 5) {
+            throw new IncorrectFormatException("Line is invalid for task type 'Event'. Please use: [Task type] | [Completion status] | [Task description] | [from date] | [by date]");
+        }
+    }
+
 }

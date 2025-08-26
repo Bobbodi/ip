@@ -22,6 +22,14 @@ public class Task {
         return isDone;
     }
 
+    public void  setDone(String s) {
+        if (s.equalsIgnoreCase("0")) {
+            this.isDone = false;
+        } else {
+            this.isDone = true;
+        }
+    }
+
     public void markDone() {
         isDone = true;
     }
