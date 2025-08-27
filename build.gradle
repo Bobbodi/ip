@@ -1,0 +1,11 @@
+plugins {
+    id 'application'
+}
+
+application {
+    mainClass = 'Bobbodi'
+}
+
+tasks.named('run') {
+    standardInput = System.in
+}
