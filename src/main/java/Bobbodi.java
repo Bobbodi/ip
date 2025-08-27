@@ -2,7 +2,7 @@ import Exceptions.*;
 import Tasks.*;
 import Resources.*;
 
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,13 +42,16 @@ public class Bobbodi {
                         break;
                     case "D":
                         Helper.validateFileLine_Deadline(parts);
-                        Deadline deadline = new Deadline(parts[2], parts[3]);
+                        LocalDate byDate = Helper.isDate(parts[3]);
+                        Deadline deadline = new Deadline(parts[2], byDate);
                         deadline.setDone(parts[1]);
                         Constants.LIST.add(deadline);
                         break;
                     case "E":
                         Helper.validateFileLine_Event(parts);
-                        Event event = new Event(parts[2], parts[3], parts[4]);
+                        LocalDate fromDate = Helper.isDate(parts[3]);
+                        LocalDate byDate1 = Helper.isDate(parts[4]);
+                        Event event = new Event(parts[2], fromDate, byDate1);
                         event.setDone(parts[1]);
                         Constants.LIST.add(event);
                         break;
@@ -56,12 +59,11 @@ public class Bobbodi {
                         throw new IncorrectFormatException(String.format("Unknown task type %s", parts[0]));
                 }
             }
+            Helper.chatbotSays(Constants.LOADED);
         } catch (FileNotFoundException e) {
             Helper.chatbotSays(String.format("File %s not found", filePath));
         } catch (IncorrectFormatException | InvalidTaskNumberException | MissingArgumentException e) {
             Helper.chatbotSays(e.getMessage());
-        } finally {
-            Helper.chatbotSays(Constants.LOADED);
         }
     }
 
@@ -82,6 +84,12 @@ public class Bobbodi {
             try {
                 if (userInput.equalsIgnoreCase("list")) {
                     Helper.chatbotSays(Helper.formatLIST());
+
+                } else if (Helper.isCheckDue(userInput)) {
+                    String[] parts = userInput.split("\\s+", 2);
+                    LocalDate checkDate = Helper.isDate(parts[1]);
+                    Helper.chatbotSays(Constants.DUEONTHISDAY + checkDate + "\n\t" +
+                            Helper.dueOnThisDay(checkDate));
 
                 } else if (Helper.isMark(userInput)) {
                     String[] words = userInput.split("\\s+");
@@ -119,7 +127,8 @@ public class Bobbodi {
                     String[] words = userInput.split("/");
                     String description = words[0].replaceFirst("deadline", "").trim();
                     String by = words[1].replaceFirst("by", "").trim();
-                    Deadline newDeadline = new Deadline(description, by);
+                    LocalDate byDate = Helper.isDate(by);
+                    Deadline newDeadline = new Deadline(description, byDate);
                     Constants.LIST.add(newDeadline);
 
                     Helper.chatbotSays(Constants.ADDTASK +
@@ -131,8 +140,9 @@ public class Bobbodi {
                     String description = words[0].replaceFirst("event", "").trim();
                     String from = words[1].replaceFirst("from", "").trim();
                     String to = words[2].replaceFirst("to", "").trim();
-
-                    Event newEvent = new Event(description, from, to);
+                    LocalDate fromDate = Helper.isDate(from);
+                    LocalDate toDate = Helper.isDate(to);
+                    Event newEvent = new Event(description, fromDate, toDate);
                     Constants.LIST.add(newEvent);
 
                     Helper.chatbotSays(Constants.ADDTASK +

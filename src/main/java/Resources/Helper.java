@@ -1,9 +1,19 @@
 package Resources;
 
 import Exceptions.*;
+import Tasks.Deadline;
+import Tasks.Event;
+import Tasks.Task;
+import Tasks.Todo;
 
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.List;
 
 public class Helper {
     public static String formatLIST() {
@@ -185,6 +195,27 @@ public class Helper {
         }
     }
 
+    public static LocalDate isDate(String input) {
+        List<DateTimeFormatter> FORMATTERS = Arrays.asList(
+                DateTimeFormatter.ofPattern("d/M/yyyy"),    // 2/12/2019
+                DateTimeFormatter.ofPattern("dd/MM/yyyy"),  // 02/12/2019
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"),  // 2019-10-15
+                DateTimeFormatter.ofPattern("M/d/yyyy"),    // 12/2/2019 (US style)
+                DateTimeFormatter.ofPattern("dd-MMM-yyyy"), // 15-Oct-2019
+                DateTimeFormatter.ofPattern("d MMM yyyy"),   // 2 Dec 2019
+                DateTimeFormatter.ofPattern("MMM d yyyy")   //Dec 2 2019
+        );
+        for (DateTimeFormatter formatter : FORMATTERS) {
+            try {
+                return LocalDate.parse(input, formatter);
+            } catch (DateTimeParseException e) {
+                // Ignore and try next format
+            }
+        }
+        throw new IncorrectFormatException("Can't read the datetime... try: 6/6/2025");
+
+    }
+
     public static void validateFileLine(String[] parts) {
         if (parts.length < 3) {
             throw new IncorrectFormatException("Line is invalid. Please use: [Task type] | [Completion status] | [Task description]");
@@ -208,5 +239,32 @@ public class Helper {
             throw new IncorrectFormatException("Line is invalid for task type 'Event'. Please use: [Task type] | [Completion status] | [Task description] | [from date] | [by date]");
         }
     }
+
+    public static boolean isCheckDue(String userInput) {
+        String[] parts = userInput.split("\\s+", 2);
+        return parts[0].equalsIgnoreCase("due") && (parts.length == 2);
+    }
+
+    public static String dueOnThisDay(LocalDate due) {
+        StringBuilder output = new StringBuilder();
+
+        for (Task task : Constants.LIST) {
+            if (task instanceof Deadline) {
+                Deadline d = (Deadline) task;
+                if (d.getBy().equals(due)) {
+                    output.append(d.toString()).append("\n\t");
+                }
+            } else if (task instanceof Event) {
+                Event e = (Event) task;
+                if ((e.getFrom().isBefore(due) || e.getFrom().equals(due)) &&
+                        (e.getTo().isAfter(due) || e.getTo().equals(due))) {
+                    output.append(e.toString()).append("\n\t");
+                }
+            }
+        }
+
+        return output.toString().trim();
+    }
+
 
 }
