@@ -21,10 +21,18 @@ public class Bobbodi {
         bye();
     }
 
+    /**
+     * Prints HELLO on console.
+     */
     public static void greeting() {
         Helper.chatbotSays(Constants.HELLO);
     }
 
+    /**
+     * Reads and loads tasks from file. The filepath is relative to the base location.
+     * Once loaded, it prints "All in!".
+     * @param filePath
+     */
     public static void loadfile(String filePath) {
         try {
             Helper.chatbotSays(String.format("Reading file %s...", filePath));
@@ -67,10 +75,18 @@ public class Bobbodi {
         }
     }
 
+    /**
+     * Prints BYE on console
+     */
     public static void bye() {
         Helper.chatbotSays(Constants.BYE);
     }
 
+    /**
+     * Handles user interaction with chatbot. Keeps waiting for user input until it receives 'bye'.
+     * Handles: bye, list, mark [task number], unmark [task number], delete [task number], todo [task description],
+     * deadline [task description] [by date], event [task description] [from date] [to date], due [date]
+     */
     public static void interact() {
         String userInput = "";
         Scanner scanner = new Scanner(System.in);
