@@ -1,17 +1,14 @@
 package Resources;
 
+
 import Exceptions.*;
-import Tasks.Deadline;
-import Tasks.Event;
-import Tasks.Task;
-import Tasks.Todo;
+import Tasks.*;
 
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,6 +37,9 @@ public class Helper {
     }
 
     public static boolean isNumeric(String text) {
+        if (text.isEmpty()) {
+            return false;
+        }
         ParsePosition pos = new ParsePosition(0);
         NumberFormat.getInstance().parse(text, pos);
         return text.length() == pos.getIndex();
