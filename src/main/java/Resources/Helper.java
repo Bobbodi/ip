@@ -251,19 +251,45 @@ public class Helper {
             if (task instanceof Deadline) {
                 Deadline d = (Deadline) task;
                 if (d.getBy().equals(due)) {
-                    output.append(d.toString()).append("\n\t");
+                    output.append("\t").append(d.toString()).append("\n");
                 }
             } else if (task instanceof Event) {
                 Event e = (Event) task;
                 if ((e.getFrom().isBefore(due) || e.getFrom().equals(due)) &&
                         (e.getTo().isAfter(due) || e.getTo().equals(due))) {
-                    output.append(e.toString()).append("\n\t");
+                    output.append("\t").append(e.toString()).append("\n");
                 }
             }
         }
 
-        return output.toString().trim();
+        return output.toString();
     }
 
+    public static boolean isFind(String userInput) {
+        String[] parts = userInput.split("\\s+", 2);
+        return parts[0].equalsIgnoreCase("find") && (parts.length == 2);
+    }
+
+    public static String findResults(String userInput) {
+        String[] parts = userInput.split("\\s+", 2);
+        if (parts[1].isEmpty()) {
+            return "Nothing here...";
+        }
+
+        String search = parts[1].toLowerCase();
+        StringBuilder results = new StringBuilder();
+
+        for (Task task : Constants.LIST) {
+            if (task.getDescription().toLowerCase().contains(search)) {
+                if (!results.isEmpty()) {
+                    results.append("\n"); // add newline before appending next task
+                }
+                results.append("\t").append(task.toString());
+            }
+        }
+        return !results.isEmpty()
+                ? results.toString()
+                : "No matches...";
+    }
 
 }

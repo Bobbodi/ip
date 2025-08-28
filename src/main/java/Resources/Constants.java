@@ -25,5 +25,6 @@ public class Constants {
     public static final String ADDED = "Inserted: ";
     public static final String LOADED = "All in!";
     public static final String DUEONTHISDAY = "Woohoo here are the tasks due on ";
+    public static final String FINDRESULTS = "Sneak peak is here ~";
 
 }
