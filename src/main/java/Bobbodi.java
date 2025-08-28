@@ -104,8 +104,12 @@ public class Bobbodi {
                 } else if (Helper.isCheckDue(userInput)) {
                     String[] parts = userInput.split("\\s+", 2);
                     LocalDate checkDate = Helper.isDate(parts[1]);
-                    Helper.chatbotSays(Constants.DUEONTHISDAY + checkDate + "\n\t" +
+                    Helper.chatbotSays(Constants.DUEONTHISDAY + checkDate + "\n" +
                             Helper.dueOnThisDay(checkDate));
+
+                } else if (Helper.isFind(userInput)) {
+                    Helper.chatbotSays(Constants.FINDRESULTS + "\n" +
+                            Helper.findResults(userInput));
 
                 } else if (Helper.isMark(userInput)) {
                     String[] words = userInput.split("\\s+");
@@ -165,7 +169,7 @@ public class Bobbodi {
                             newEvent + "\n" +
                             Helper.tasksLeft(Constants.LIST.size()));
 
-                } else if (!userInput.equalsIgnoreCase("bye")) {
+                } else if (!userInput.equalsIgnoreCase("bye") && !userInput.isEmpty()) {
                     Helper.chatbotSays(Constants.ADDED + userInput);
                     Constants.LIST.add(new Task(userInput));
                 }
