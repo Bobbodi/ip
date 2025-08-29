@@ -286,6 +286,8 @@ public class Helper {
                 DateTimeFormatter.ofPattern("d MMM yyyy"),   // 2 Dec 2019
                 DateTimeFormatter.ofPattern("MMM d yyyy")   //Dec 2 2019
         );
+        input = input.trim();
+        System.out.println(input);
         for (DateTimeFormatter formatter : FORMATTERS) {
             try {
                 return LocalDate.parse(input, formatter);
@@ -293,7 +295,7 @@ public class Helper {
                 // Ignore and try next format
             }
         }
-        throw new IncorrectFormatException("Can't read the datetime... try: 6/6/2025");
+        throw new IncorrectFormatException(String.format("Can't read the datetime %s... try: 6/6/2025", input));
 
     }
 
@@ -399,6 +401,11 @@ public class Helper {
         return !results.isEmpty()
                 ? results.toString()
                 : "No matches...";
+    }
+
+    public static boolean isLoadFile(String userInput) {
+        String[] parts = userInput.split("\\s+", 2);
+        return parts[0].equalsIgnoreCase("load") && !parts[1].isEmpty();
     }
 
 }
