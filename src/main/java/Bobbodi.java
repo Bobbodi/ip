@@ -43,28 +43,28 @@ public class Bobbodi {
                 String[] parts = line.split(" - ");
                 Helper.validateFileLine(parts);
                 switch (parts[0]) {
-                    case "T":
-                        Todo todo = new Todo(parts[2]);
-                        todo.setDone(parts[1]);
-                        Constants.LIST.add(todo);
-                        break;
-                    case "D":
-                        Helper.validateFileLine_Deadline(parts);
-                        LocalDate byDate = Helper.isDate(parts[3]);
-                        Deadline deadline = new Deadline(parts[2], byDate);
-                        deadline.setDone(parts[1]);
-                        Constants.LIST.add(deadline);
-                        break;
-                    case "E":
-                        Helper.validateFileLine_Event(parts);
-                        LocalDate fromDate = Helper.isDate(parts[3]);
-                        LocalDate byDate1 = Helper.isDate(parts[4]);
-                        Event event = new Event(parts[2], fromDate, byDate1);
-                        event.setDone(parts[1]);
-                        Constants.LIST.add(event);
-                        break;
-                    default:
-                        throw new IncorrectFormatException(String.format("Unknown task type %s", parts[0]));
+                case "T":
+                    Todo todo = new Todo(parts[2]);
+                    todo.setDone(parts[1]);
+                    Constants.LIST.add(todo);
+                    break;
+                case "D":
+                    Helper.validateFileLine_Deadline(parts);
+                    LocalDate byDate = Helper.isDate(parts[3]);
+                    Deadline deadline = new Deadline(parts[2], byDate);
+                    deadline.setDone(parts[1]);
+                    Constants.LIST.add(deadline);
+                    break;
+                case "E":
+                    Helper.validateFileLine_Event(parts);
+                    LocalDate fromDate = Helper.isDate(parts[3]);
+                    LocalDate byDate1 = Helper.isDate(parts[4]);
+                    Event event = new Event(parts[2], fromDate, byDate1);
+                    event.setDone(parts[1]);
+                    Constants.LIST.add(event);
+                    break;
+                default:
+                    throw new IncorrectFormatException(String.format("Unknown task type %s", parts[0]));
                 }
             }
             Helper.chatbotSays(Constants.LOADED);
@@ -139,9 +139,8 @@ public class Bobbodi {
                     Todo newTodo = new Todo(description);
                     Constants.LIST.add(newTodo);
 
-                    Helper.chatbotSays(Constants.ADDTASK +
-                            newTodo + "\n" +
-                            Helper.tasksLeft(Constants.LIST.size()));
+                    Helper.chatbotSays(Constants.ADDTASK
+                           + newTodo + "\n" + Helper.tasksLeft(Constants.LIST.size()));
 
                 } else if (Helper.isDeadline(userInput)) {
                     String[] words = userInput.split("/");
