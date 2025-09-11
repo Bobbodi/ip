@@ -1,12 +1,22 @@
-import Exceptions.*;
-import Tasks.*;
-import Resources.*;
-
-import java.time.LocalDate;
-import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.util.Scanner;
 
+import Exceptions.EmptyListException;
+import Exceptions.IncorrectFormatException;
+import Exceptions.InvalidTaskNumberException;
+import Exceptions.MissingArgumentException;
+import Resources.Constants;
+import Resources.Helper;
+import Tasks.Deadline;
+import Tasks.Event;
+import Tasks.Task;
+import Tasks.Todo;
+
+/**
+ * Main class
+ */
 public class Bobbodi {
     public static void main(String[] args) {
         String logo = " ____        _        \n"
@@ -41,12 +51,12 @@ public class Bobbodi {
             } else if (Helper.isCheckDue(userInput)) {
                 String[] parts = userInput.split("\\s+", 2);
                 LocalDate checkDate = Helper.isDate(parts[1]);
-                return (Constants.DUEONTHISDAY + checkDate + "\n" +
-                        Helper.dueOnThisDay(checkDate));
+                return (Constants.DUEONTHISDAY + checkDate + "\n"
+                        + Helper.dueOnThisDay(checkDate));
 
             } else if (Helper.isFind(userInput)) {
-                return (Constants.FINDRESULTS + "\n" +
-                        Helper.findResults(userInput));
+                return (Constants.FINDRESULTS + "\n"
+                        + Helper.findResults(userInput));
 
             } else if (Helper.isMark(userInput)) {
                 String[] words = userInput.split("\\s+");
@@ -66,10 +76,9 @@ public class Bobbodi {
                 String[] words = userInput.split("\\s+");
                 int taskNumber = Integer.parseInt(words[1]) - 1;
                 Task deletedTask = Constants.LIST.remove(taskNumber);
-                return (Constants.REMOVETASK +
-                        deletedTask + "\n" +
-                        Helper.tasksLeft(Constants.LIST.size())
-                );
+                return (Constants.REMOVETASK
+                        + deletedTask + "\n"
+                        + Helper.tasksLeft(Constants.LIST.size()));
 
             } else if (Helper.isTodo(userInput)) {
                 String description = userInput.replaceFirst("todo", "").trim();
@@ -88,9 +97,9 @@ public class Bobbodi {
                 Deadline newDeadline = new Deadline(description, byDate);
                 Constants.LIST.add(newDeadline);
 
-                return (Constants.ADDTASK +
-                        newDeadline + "\n" +
-                        Helper.tasksLeft(Constants.LIST.size()));
+                return (Constants.ADDTASK
+                        + newDeadline + "\n"
+                        + Helper.tasksLeft(Constants.LIST.size()));
 
             } else if (Helper.isEvent(userInput)) {
                 String[] fromSplit = userInput.split("/from", 2);
@@ -105,15 +114,16 @@ public class Bobbodi {
                 Event newEvent = new Event(description, fromDate, toDate);
                 Constants.LIST.add(newEvent);
 
-                return (Constants.ADDTASK +
-                        newEvent + "\n" +
-                        Helper.tasksLeft(Constants.LIST.size()));
+                return (Constants.ADDTASK
+                        + newEvent + "\n"
+                        + Helper.tasksLeft(Constants.LIST.size()));
 
             } else if (!userInput.equalsIgnoreCase("bye") && !userInput.isEmpty()) {
                 Constants.LIST.add(new Task(userInput));
                 return (Constants.ADDED + userInput);
             }
-        } catch (IncorrectFormatException | MissingArgumentException | InvalidTaskNumberException | EmptyListException e) {
+        } catch (IncorrectFormatException | MissingArgumentException
+                 | InvalidTaskNumberException | EmptyListException e) {
             return e.getMessage();
         } catch (Exception e) {
             return "An unexpected error occurred. " + e.getMessage();
@@ -130,7 +140,7 @@ public class Bobbodi {
     /**
      * Reads and loads tasks from file. The filepath is relative to the base location.
      * Once loaded, it prints "All in!".
-     * @param filePath
+     * @param filePath for file path relative
      */
     public static String loadfile(String filePath) {
         try {
@@ -181,107 +191,6 @@ public class Bobbodi {
     public static String bye() {
         return (Constants.BYE);
     }
-
-//    /**
-//     * Handles user interaction with chatbot. Keeps waiting for user input until it receives 'bye'.
-//     * Handles: bye, list, mark [task number], unmark [task number], delete [task number], todo [task description],
-//     * deadline [task description] [by date], event [task description] [from date] [to date], due [date]
-//     */
-//    public static void interact() {
-//        String userInput = "";
-//        Scanner scanner = new Scanner(System.in);
-//
-//        while (scanner.hasNextLine()) {
-//            userInput = scanner.nextLine().trim();
-//            getResponse(userInput);
-//            if (userInput.equalsIgnoreCase("bye")) {
-//                break;
-//            }
-//
-//            try {
-//                if (userInput.equalsIgnoreCase("list")) {
-//                    Helper.chatbotSays(Helper.formatList());
-//
-//                } else if (Helper.isCheckDue(userInput)) {
-//                    String[] parts = userInput.split("\\s+", 2);
-//                    LocalDate checkDate = Helper.isDate(parts[1]);
-//                    Helper.chatbotSays(Constants.DUEONTHISDAY + checkDate + "\n" +
-//                            Helper.dueOnThisDay(checkDate));
-//
-//                } else if (Helper.isFind(userInput)) {
-//                    Helper.chatbotSays(Constants.FINDRESULTS + "\n" +
-//                            Helper.findResults(userInput));
-//
-//                } else if (Helper.isMark(userInput)) {
-//                    String[] words = userInput.split("\\s+");
-//                    int taskNumber = Integer.parseInt(words[1]) - 1;
-//                    Constants.LIST.get(taskNumber).markDone();
-//                    Helper.chatbotSays(Constants.MARKASDONE
-//                            + Constants.LIST.get(taskNumber));
-//
-//                } else if (Helper.isUnmark(userInput)) {
-//                    String[] words = userInput.split("\\s+");
-//                    int taskNumber = Integer.parseInt(words[1]) - 1;
-//                    Constants.LIST.get(taskNumber).markNotDone();
-//                    Helper.chatbotSays(Constants.MARKNOTDONE
-//                            + Constants.LIST.get(taskNumber));
-//
-//                } else if (Helper.isDelete(userInput)) {
-//                    String[] words = userInput.split("\\s+");
-//                    int taskNumber = Integer.parseInt(words[1]) - 1;
-//                    Task deletedTask = Constants.LIST.remove(taskNumber);
-//                    Helper.chatbotSays(Constants.REMOVETASK +
-//                            deletedTask + "\n" +
-//                            Helper.tasksLeft(Constants.LIST.size())
-//                    );
-//
-//                } else if (Helper.isTodo(userInput)) {
-//                    String description = userInput.replaceFirst("todo", "").trim();
-//                    Todo newTodo = new Todo(description);
-//                    Constants.LIST.add(newTodo);
-//
-//                    Helper.chatbotSays(Constants.ADDTASK
-//                           + newTodo + "\n" + Helper.tasksLeft(Constants.LIST.size()));
-//
-//                } else if (Helper.isDeadline(userInput)) {
-//                    String[] words = userInput.split("/");
-//                    String description = words[0].replaceFirst("deadline", "").trim();
-//                    String by = words[1].replaceFirst("by", "").trim();
-//                    LocalDate byDate = Helper.isDate(by);
-//                    Deadline newDeadline = new Deadline(description, byDate);
-//                    Constants.LIST.add(newDeadline);
-//
-//                    Helper.chatbotSays(Constants.ADDTASK +
-//                            newDeadline + "\n" +
-//                            Helper.tasksLeft(Constants.LIST.size()));
-//
-//                } else if (Helper.isEvent(userInput)) {
-//                    String[] words = userInput.split("/");
-//                    String description = words[0].replaceFirst("event", "").trim();
-//                    String from = words[1].replaceFirst("from", "").trim();
-//                    String to = words[2].replaceFirst("to", "").trim();
-//                    LocalDate fromDate = Helper.isDate(from);
-//                    LocalDate toDate = Helper.isDate(to);
-//                    Event newEvent = new Event(description, fromDate, toDate);
-//                    Constants.LIST.add(newEvent);
-//
-//                    Helper.chatbotSays(Constants.ADDTASK +
-//                            newEvent + "\n" +
-//                            Helper.tasksLeft(Constants.LIST.size()));
-//
-//                } else if (!userInput.equalsIgnoreCase("bye") && !userInput.isEmpty()) {
-//                    Helper.chatbotSays(Constants.ADDED + userInput);
-//                    Constants.LIST.add(new Task(userInput));
-//                }
-//            } catch (IncorrectFormatException | MissingArgumentException | InvalidTaskNumberException |
-//            EmptyListException e) {
-//                Helper.chatbotSays(e.getMessage());
-//            } catch (Exception e) {
-//                return ("An unexpected error occurred. " + e.getMessage());
-//            }
-//        }
-//        scanner.close();
-//    }
 
 }
 
