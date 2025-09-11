@@ -1,10 +1,17 @@
 package Tasks;
 
+/**
+ * Task base class with description, isDone
+ */
 public class Task {
 
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Constructor for task with description
+     * @param description for task description
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
@@ -22,7 +29,11 @@ public class Task {
         return isDone;
     }
 
-    public void  setDone(String s) {
+    /**
+     * If 0, set to not done. If 1, set to done
+     * @param s 0 or 1 in string
+     */
+    public void setDone(String s) {
         if (s.equalsIgnoreCase("0")) {
             this.isDone = false;
         } else {

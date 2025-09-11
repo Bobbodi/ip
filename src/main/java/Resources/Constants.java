@@ -1,10 +1,13 @@
 package Resources;
 
-import Tasks.Task;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import Tasks.Task;
+
+/**
+ * Declare constants that are referenced in Bobbodi class
+ */
 public class Constants {
 
     public static final String DASHES = "---------------------------------------------";

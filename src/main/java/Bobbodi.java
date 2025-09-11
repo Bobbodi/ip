@@ -31,7 +31,7 @@ public class Bobbodi {
 
         try {
             if (userInput.equalsIgnoreCase("list")) {
-                return (Helper.formatLIST());
+                return (Helper.formatList());
 
             } else if (Helper.isLoadFile(userInput)) {
                 String[] parts = userInput.split("\\s+", 2);
@@ -148,14 +148,14 @@ public class Bobbodi {
                     Constants.LIST.add(todo);
                     break;
                 case "D":
-                    Helper.validateFileLine_Deadline(parts);
+                    Helper.validateFileLineDeadline(parts);
                     LocalDate byDate = Helper.isDate(parts[3]);
                     Deadline deadline = new Deadline(parts[2], byDate);
                     deadline.setDone(parts[1]);
                     Constants.LIST.add(deadline);
                     break;
                 case "E":
-                    Helper.validateFileLine_Event(parts);
+                    Helper.validateFileLineEvent(parts);
                     LocalDate fromDate = Helper.isDate(parts[3]);
                     LocalDate byDate1 = Helper.isDate(parts[4]);
                     Event event = new Event(parts[2], fromDate, byDate1);
@@ -200,7 +200,7 @@ public class Bobbodi {
 //
 //            try {
 //                if (userInput.equalsIgnoreCase("list")) {
-//                    Helper.chatbotSays(Helper.formatLIST());
+//                    Helper.chatbotSays(Helper.formatList());
 //
 //                } else if (Helper.isCheckDue(userInput)) {
 //                    String[] parts = userInput.split("\\s+", 2);

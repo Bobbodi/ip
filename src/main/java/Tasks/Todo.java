@@ -1,5 +1,8 @@
 package Tasks;
 
+/**
+ * Todo class with additional [T] for toString
+ */
 public class Todo extends Task {
 
     protected String by;

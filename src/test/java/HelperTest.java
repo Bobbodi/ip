@@ -1,12 +1,16 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.Test;
+
 import Exceptions.InvalidTaskNumberException;
 import Resources.Constants;
 import Resources.Helper;
 import Tasks.Todo;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalDate;
 
 public class HelperTest {
     @Test
@@ -38,8 +42,7 @@ public class HelperTest {
         Constants.LIST.add(new Todo("Task 1"));
 
         InvalidTaskNumberException ex = assertThrows(
-                InvalidTaskNumberException.class,
-                () -> Helper.validTaskNumber("5")
+                InvalidTaskNumberException.class, () -> Helper.validTaskNumber("5")
         );
         assertEquals("5 is not a valid task number.", ex.getMessage());
     }

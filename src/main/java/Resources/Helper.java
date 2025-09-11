@@ -1,8 +1,5 @@
 package Resources;
 
-import Exceptions.*;
-import Tasks.*;
-
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.time.LocalDate;
@@ -11,12 +8,23 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 
+import Exceptions.EmptyListException;
+import Exceptions.IncorrectFormatException;
+import Exceptions.InvalidTaskNumberException;
+import Exceptions.MissingArgumentException;
+import Tasks.Deadline;
+import Tasks.Event;
+import Tasks.Task;
+
+/**
+ * Include all helper functions that are used in Bobbodi class
+ */
 public class Helper {
     /**
      * Format tasks in LIST nicely.
      * @return String of tasks.toString()
      */
-    public static String formatLIST() {
+    public static String formatList() {
         if (Constants.LIST.isEmpty()) {
             return "There are no tasks to display!";
         }
@@ -24,7 +32,7 @@ public class Helper {
         StringBuilder text = new StringBuilder();
         text.append("Here are the tasks in your list:\n");
         for (int i = 0; i < Constants.LIST.size(); i++) {
-            String numbering = String.format("\t%2d. ", i+1);
+            String numbering = String.format("\t%2d. ", i + 1);
             text.append(numbering).append(Constants.LIST.get(i));
             if (i < Constants.LIST.size() - 1) {
                 text.append("\n");
@@ -60,13 +68,13 @@ public class Helper {
     /**
      * Checks validity of task number entered for 'mark', 'unmark', 'delete'.
      * Task number must be more than or equal to 1 and less than the total number of tasks in LIST.
-     * @param str
+     * @param str is a task number
      * @return true if it is;
-     * @throws InvalidTaskNumberException
+     * @throws InvalidTaskNumberException for invalid task
      */
     public static boolean validTaskNumber(String str) throws InvalidTaskNumberException {
-        if (Integer.parseInt(str) <= Constants.LIST.size() &&
-                Integer.parseInt(str) > 0) {
+        if (Integer.parseInt(str) <= Constants.LIST.size()
+                && Integer.parseInt(str) > 0) {
             return true;
         } else {
             throw new InvalidTaskNumberException(String.format("%s is not a valid task number.", str));
@@ -75,17 +83,17 @@ public class Helper {
 
     /**
      * Checks if the userInput is in the format of "mark [task number]". Uses validTaskNumber().
-     * @param userInput
+     * @param userInput for user input
      * @return true if it is
-     * @throws MissingArgumentException
+     * @throws MissingArgumentException for missing argument
      */
     public static boolean isMark(String userInput) throws MissingArgumentException {
         //e.g. mark 2
         String[] words = userInput.split("\\s+");
         if (words[0].equalsIgnoreCase("mark")) {
             if (words.length == 2) {
-                return isNumeric(words[1]) &&
-                        validTaskNumber(words[1]);
+                return isNumeric(words[1])
+                        && validTaskNumber(words[1]);
             } else {
                 throw new MissingArgumentException("Missing task number. Format: mark [task number from 1 to n]");
             }
@@ -95,17 +103,17 @@ public class Helper {
 
     /**
      * Checks if the userInput is in the format of "unmark [task number]". Uses validTaskNumber().
-     * @param userInput
-     * @return
-     * @throws MissingArgumentException
+     * @param userInput for user input
+     * @return true if is unmark
+     * @throws MissingArgumentException for missing arguments
      */
-    public static boolean isUnmark(String userInput) throws MissingArgumentException{
+    public static boolean isUnmark(String userInput) throws MissingArgumentException {
         //e.g. unmark 2
         String[] words = userInput.split("\\s+");
         if (words[0].equalsIgnoreCase("unmark")) {
             if (words.length == 2) {
-                return isNumeric(words[1]) &&
-                        validTaskNumber(words[1]);
+                return isNumeric(words[1])
+                        && validTaskNumber(words[1]);
             } else {
                 throw new MissingArgumentException("Missing task number. Format: unmark [task number from 1 to n]");
             }
@@ -116,15 +124,15 @@ public class Helper {
     /**
      * Checks if the task number is valid for deletion. There must be tasks in the LIST and the number must be
      * less than or equal to the length of the LIST.
-     * @param str
-     * @return
-     * @throws InvalidTaskNumberException
+     * @param str for task number
+     * @return true if is valid to delete the task from LIST
+     * @throws InvalidTaskNumberException for invalid task number
      */
     public static boolean validTaskNumberForDelete(String str) throws InvalidTaskNumberException {
         if (Constants.LIST.isEmpty()) {
             throw new EmptyListException("There are no tasks to delete!");
-        } else if (Integer.parseInt(str) <= Constants.LIST.size() &&
-                Integer.parseInt(str) > 0) {
+        } else if (Integer.parseInt(str) <= Constants.LIST.size()
+                && Integer.parseInt(str) > 0) {
             return true;
         } else {
             throw new InvalidTaskNumberException(String.format("%s is not a valid task number.", str));
@@ -133,17 +141,17 @@ public class Helper {
 
     /**
      * Checks if the userInput is in the format of "delete [task number]". Uses validTaskNumberForDelete().
-     * @param userInput
-     * @return
-     * @throws MissingArgumentException
+     * @param userInput for user input
+     * @return true if it is for delete
+     * @throws MissingArgumentException for missing argument
      */
-    public static boolean isDelete(String userInput) throws MissingArgumentException{
+    public static boolean isDelete(String userInput) throws MissingArgumentException {
         //e.g. delete 2
         String[] words = userInput.split(" ");
         if (words[0].equalsIgnoreCase("delete")) {
             if (words.length == 2) {
-                return isNumeric(words[1]) &&
-                        validTaskNumberForDelete(words[1]);
+                return isNumeric(words[1])
+                        && validTaskNumberForDelete(words[1]);
             } else {
                 throw new MissingArgumentException("Missing task number. Format: delete [task number from 1 to n]");
             }
@@ -154,11 +162,11 @@ public class Helper {
     /**
      * Checks if userInput is in the format "todo [task description]".
      * If not, it will throw exception with meaningful message.
-     * @param userInput
-     * @return
-     * @throws MissingArgumentException
+     * @param userInput for user input
+     * @return true if is todo
+     * @throws MissingArgumentException for missing argument
      */
-    public static boolean isTodo(String userInput) throws MissingArgumentException{
+    public static boolean isTodo(String userInput) throws MissingArgumentException {
         //e.g. to.do borrow book
         String[] words = userInput.split(" ");
         if (words[0].equalsIgnoreCase("todo")) {
@@ -174,28 +182,32 @@ public class Helper {
     /**
      * Checks if userInput is in the format "deadline [task description] [by date]".
      * If not, it will throw exception with meaningful message.
-     * @param userInput
-     * @return
-     * @throws MissingArgumentException
+     * @param userInput for user input
+     * @return true if is deadline
+     * @throws MissingArgumentException for missing argument
      */
     public static boolean isDeadline(String userInput) throws MissingArgumentException {
         String[] parts = userInput.split("\\s+", 2);
 
         if (parts[0].equalsIgnoreCase("deadline")) {
             if (parts.length <= 1 || parts[1].trim().isEmpty() || parts[1].trim().startsWith("/")) {
-                throw new MissingArgumentException("Missing task description. Format: deadline [task description] /by [deadline]");
+                throw new MissingArgumentException("Missing task description."
+                        + " Format: deadline [task description] /by [deadline]");
             }
             String remaining = parts[1].trim();
             if (!remaining.contains("/by")) {
-                throw new IncorrectFormatException("Please add '/by'. Format: deadline [task description] /by [deadline]");
+                throw new IncorrectFormatException("Please add '/by'. "
+                        + "Format: deadline [task description] /by [deadline]");
             }
             String[] byParts = remaining.split("/by", 2);
             if (byParts.length < 2) {
-                throw new MissingArgumentException("Missing 'by' date. Format: deadline [task description] /by [deadline]");
+                throw new MissingArgumentException("Missing 'by' date. "
+                        + "Format: deadline [task description] /by [deadline]");
             }
             String byDate = byParts[1].trim();
             if (byDate.isEmpty()) {
-                throw new MissingArgumentException("Missing 'by' date. Format: deadline [task description] /by [deadline]");
+                throw new MissingArgumentException("Missing 'by' date. "
+                        + "Format: deadline [task description] /by [deadline]");
             }
             return true;
         }
@@ -205,40 +217,47 @@ public class Helper {
     /**
      * Checks if userInput is in the format "event [task description] [from date] [by date]".
      * If not, it will throw exception with meaningful message.
-     * @param userInput
-     * @return
-     * @throws MissingArgumentException
-     * @throws IncorrectFormatException
+     * @param userInput for user input
+     * @return true if is event
+     * @throws MissingArgumentException for missing argument
+     * @throws IncorrectFormatException for incorrect format
      */
     public static boolean isEvent(String userInput) throws MissingArgumentException, IncorrectFormatException {
         String[] parts = userInput.split("\\s+", 2);
 
         if (parts[0].equalsIgnoreCase("event")) {
             if (parts.length <= 1 || parts[1].trim().isEmpty() || parts[1].trim().startsWith("/")) {
-                throw new MissingArgumentException("Missing task description. Format: event [task description] /from [date] /to [date]");
+                throw new MissingArgumentException("Missing task description. "
+                        + "Format: event [task description] /from [date] /to [date]");
             }
             String remaining = parts[1].trim();
             if (!remaining.contains("/from")) {
-                throw new IncorrectFormatException("Please add '/from'. Format: event [task description] /from [date] /to [date]");
+                throw new IncorrectFormatException("Please add '/from'. "
+                        + "Format: event [task description] /from [date] /to [date]");
             }
             String[] fromParts = remaining.split("/from", 2);
             if (fromParts.length < 2 || fromParts[1].trim().startsWith("/to")) {
-                throw new MissingArgumentException("Missing '/from' date. Format: event [task description] /from [date] /to [date]");
+                throw new MissingArgumentException("Missing '/from' date. "
+                        + "Format: event [task description] /from [date] /to [date]");
             }
             String fromDate = fromParts[1].trim();
             if (fromDate.isEmpty()) {
-                throw new MissingArgumentException("Missing 'from' date. Format: event [task description] /from [date] /to [date]");
+                throw new MissingArgumentException("Missing 'from' date. "
+                        + "Format: event [task description] /from [date] /to [date]");
             }
             if (!remaining.contains("/to")) {
-                throw new IncorrectFormatException("Please add '/to'. Format: event [task description] /from [date] /to [date]");
+                throw new IncorrectFormatException("Please add '/to'. "
+                        + "Format: event [task description] /from [date] /to [date]");
             }
             String[] toParts = remaining.split("/to", 2);
             if (toParts.length < 2) {
-                throw new MissingArgumentException("Missing 'to' date. Format: event [task description] /from [date] /to [date]");
+                throw new MissingArgumentException("Missing 'to' date. "
+                        + "Format: event [task description] /from [date] /to [date]");
             }
             String toDate = toParts[1].trim();
             if (toDate.isEmpty()) {
-                throw new MissingArgumentException("Missing 'to' date. Format: event [task description] /from [date] /to [date]");
+                throw new MissingArgumentException("Missing 'to' date. "
+                        + "Format: event [task description] /from [date] /to [date]");
             }
             return true;
         }
@@ -247,8 +266,8 @@ public class Helper {
 
     /**
      * For printing purposes. If number of tasks left is 1, it prints "task", else, "tasks"
-     * @param num
-     * @return
+     * @param num for number of tasks left
+     * @return task in formatted string
      */
     public static String tasksLeft(int num) {
         String taskGrammer = "tasks";
@@ -261,7 +280,7 @@ public class Helper {
     /**
      * Checks if num is 0 or 1
      * @param num String
-     * @return
+     * @return true if is 0 or 1
      */
     public static Boolean isBinary(String num) {
         if (num.equalsIgnoreCase("1") || num.equalsIgnoreCase("0")) {
@@ -273,22 +292,22 @@ public class Helper {
 
     /**
      * Checks if input is a date by comparing against non-exhaustive list of formatters.
-     * @param input
+     * @param input for input
      * @return formatted date
      */
     public static LocalDate isDate(String input) {
-        List<DateTimeFormatter> FORMATTERS = Arrays.asList(
-                DateTimeFormatter.ofPattern("d/M/yyyy"),    // 2/12/2019
-                DateTimeFormatter.ofPattern("dd/MM/yyyy"),  // 02/12/2019
-                DateTimeFormatter.ofPattern("yyyy-MM-dd"),  // 2019-10-15
-                DateTimeFormatter.ofPattern("M/d/yyyy"),    // 12/2/2019 (US style)
+        List<DateTimeFormatter> formatters = Arrays.asList(
+                DateTimeFormatter.ofPattern("d/M/yyyy"), // 2/12/2019
+                DateTimeFormatter.ofPattern("dd/MM/yyyy"), // 02/12/2019
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"), // 2019-10-15
+                DateTimeFormatter.ofPattern("M/d/yyyy"), // 12/2/2019 (US style)
                 DateTimeFormatter.ofPattern("dd-MMM-yyyy"), // 15-Oct-2019
-                DateTimeFormatter.ofPattern("d MMM yyyy"),   // 2 Dec 2019
-                DateTimeFormatter.ofPattern("MMM d yyyy")   //Dec 2 2019
+                DateTimeFormatter.ofPattern("d MMM yyyy"), // 2 Dec 2019
+                DateTimeFormatter.ofPattern("MMM d yyyy") //Dec 2 2019
         );
         input = input.trim();
         System.out.println(input);
-        for (DateTimeFormatter formatter : FORMATTERS) {
+        for (DateTimeFormatter formatter : formatters) {
             try {
                 return LocalDate.parse(input, formatter);
             } catch (DateTimeParseException e) {
@@ -301,15 +320,16 @@ public class Helper {
 
     /**
      * Checks that each line of file is readable. [Task type] | [Completion status] | [Task description]
-     * @param parts
+     * @param parts for parts of the file line
      */
     public static void validateFileLine(String[] parts) {
         if (parts.length < 3) {
-            throw new IncorrectFormatException("Line is invalid. Please use: " +
-                    "[Task type] | [Completion status] | [Task description]");
+            throw new IncorrectFormatException("Line is invalid. Please use: "
+                    + "[Task type] | [Completion status] | [Task description]");
         }
         if (!parts[1].equalsIgnoreCase("1") && !parts[1].equalsIgnoreCase("0")) {
-            throw new InvalidTaskNumberException(String.format("Cannot read %s. Use 1 or 0 for task completion", parts[1]));
+            throw new InvalidTaskNumberException(String.format("Cannot read %s. "
+                    + "Use 1 or 0 for task completion", parts[1]));
         }
         if (parts[2].isEmpty()) {
             throw new IncorrectFormatException("Task description cannot be empty");
@@ -319,31 +339,31 @@ public class Helper {
     /**
      * Checks that file line is a readable deadline with format
      * [Task type] | [Completion status] | [Task description] | [by date]
-     * @param parts
+     * @param parts for parts of the file line for deadline
      */
-    public static void validateFileLine_Deadline(String[] parts) {
+    public static void validateFileLineDeadline(String[] parts) {
         if (parts.length < 4) {
-            throw new IncorrectFormatException("Line is invalid for task type 'Deadline'. Please use: " +
-                    "[Task type] | [Completion status] | [Task description] | [by date]");
+            throw new IncorrectFormatException("Line is invalid for task type 'Deadline'. Please use: "
+                    + "[Task type] | [Completion status] | [Task description] | [by date]");
         }
     }
 
     /**
      * Checks that file line is a readable event with format
      * [Task type] | [Completion status] | [Task description] | [from date] | [by date]
-     * @param parts
+     * @param parts ofr parts of the file line for event
      */
-    public static void validateFileLine_Event(String[] parts) {
+    public static void validateFileLineEvent(String[] parts) {
         if (parts.length < 5) {
-            throw new IncorrectFormatException("Line is invalid for task type 'Event'. Please use: " +
-                    "[Task type] | [Completion status] | [Task description] | [from date] | [by date]");
+            throw new IncorrectFormatException("Line is invalid for task type 'Event'. Please use: "
+                    + "[Task type] | [Completion status] | [Task description] | [from date] | [by date]");
         }
     }
 
     /**
      * Checks that user input has format "due [date]"
-     * @param userInput
-     * @return
+     * @param userInput for user input
+     * @return true if is checkdue
      */
     public static boolean isCheckDue(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
@@ -352,8 +372,8 @@ public class Helper {
 
     /**
      * Returns string of tasks in LIST due on "due" date.
-     * @param due
-     * @return
+     * @param due for this day
+     * @return string of tasks due on this day
      */
     public static String dueOnThisDay(LocalDate due) {
         StringBuilder output = new StringBuilder();
@@ -366,8 +386,8 @@ public class Helper {
                 }
             } else if (task instanceof Event) {
                 Event e = (Event) task;
-                if ((e.getFrom().isBefore(due) || e.getFrom().equals(due)) &&
-                        (e.getTo().isAfter(due) || e.getTo().equals(due))) {
+                if ((e.getFrom().isBefore(due) || e.getFrom().equals(due))
+                       && (e.getTo().isAfter(due) || e.getTo().equals(due))) {
                     output.append("\t").append(e.toString()).append("\n");
                 }
             }
@@ -376,11 +396,21 @@ public class Helper {
         return output.toString();
     }
 
+    /**
+     * Check if the format of user input matches find
+     * @param userInput for user input
+     * @return true if correct format
+     */
     public static boolean isFind(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
         return parts[0].equalsIgnoreCase("find") && (parts.length == 2);
     }
 
+    /**
+     * use search to find matches according to user input
+     * @param userInput for user input
+     * @return matches as a string
+     */
     public static String findResults(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
         if (parts[1].isEmpty()) {
@@ -403,6 +433,11 @@ public class Helper {
                 : "No matches...";
     }
 
+    /**
+     * Check if the userInput matches load file format
+     * @param userInput for user input
+     * @return true if it's in the correct format
+     */
     public static boolean isLoadFile(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
         return parts[0].equalsIgnoreCase("load") && !parts[1].isEmpty();

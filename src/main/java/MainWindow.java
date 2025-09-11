@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -19,8 +21,10 @@ public class MainWindow {
     private Button sendButton;
 
     private Bobbodi bob;
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.jpg"));
-    private Image bobImage = new Image(this.getClass().getResourceAsStream("/images/DaBobbodi.jpg"));
+    private final Image userImage = new Image(Objects.requireNonNull(
+            this.getClass().getResourceAsStream("/images/DaUser.jpg")));
+    private final Image bobImage = new Image(Objects.requireNonNull(
+            this.getClass().getResourceAsStream("/images/DaBobbodi.jpg")));
 
     @FXML
     public void initialize() {
