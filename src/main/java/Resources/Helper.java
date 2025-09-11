@@ -73,8 +73,9 @@ public class Helper {
      * @throws InvalidTaskNumberException for invalid task
      */
     public static boolean validTaskNumber(String str) throws InvalidTaskNumberException {
-        if (Integer.parseInt(str) <= Constants.LIST.size()
-                && Integer.parseInt(str) > 0) {
+        boolean withinListLength = Integer.parseInt(str) <= Constants.LIST.size();
+        boolean moreThanZero = Integer.parseInt(str) > 0;
+        if (withinListLength && moreThanZero) {
             return true;
         } else {
             throw new InvalidTaskNumberException(String.format("%s is not a valid task number.", str));
@@ -137,8 +138,10 @@ public class Helper {
     public static boolean validTaskNumberForDelete(String str) throws InvalidTaskNumberException {
         if (Constants.LIST.isEmpty()) {
             throw new EmptyListException("There are no tasks to delete!");
-        } else if (Integer.parseInt(str) <= Constants.LIST.size()
-                && Integer.parseInt(str) > 0) {
+        }
+        boolean withinListLength = Integer.parseInt(str) <= Constants.LIST.size();
+        boolean moreThanZero = Integer.parseInt(str) > 0;
+        if (withinListLength && moreThanZero) {
             return true;
         } else {
             throw new InvalidTaskNumberException(String.format("%s is not a valid task number.", str));
@@ -292,7 +295,9 @@ public class Helper {
      * @return true if is 0 or 1
      */
     public static Boolean isBinary(String num) {
-        if (num.equalsIgnoreCase("1") || num.equalsIgnoreCase("0")) {
+        boolean equals1 = num.equalsIgnoreCase("1");
+        boolean equals0 = num.equalsIgnoreCase("0");
+        if (equals1 || equals0) {
             return true;
         } else {
             throw new InvalidTaskNumberException(String.format("Cannot read %d. Use 1 or 0 for task completion", num));
