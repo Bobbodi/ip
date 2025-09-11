@@ -92,8 +92,11 @@ public class Helper {
         String[] words = userInput.split("\\s+");
         if (words[0].equalsIgnoreCase("mark")) {
             if (words.length == 2) {
-                return isNumeric(words[1])
-                        && validTaskNumber(words[1]);
+
+                assert words[1] != null : "Task number string is null";
+                assert isNumeric(words[1]) : "Task number is not numeric";
+
+                return isNumeric(words[1]) && validTaskNumber(words[1]);
             } else {
                 throw new MissingArgumentException("Missing task number. Format: mark [task number from 1 to n]");
             }
@@ -112,8 +115,11 @@ public class Helper {
         String[] words = userInput.split("\\s+");
         if (words[0].equalsIgnoreCase("unmark")) {
             if (words.length == 2) {
-                return isNumeric(words[1])
-                        && validTaskNumber(words[1]);
+
+                assert words[1] != null : "Task number string is null";
+                assert isNumeric(words[1]) : "Task number is not numeric";
+
+                return isNumeric(words[1]) && validTaskNumber(words[1]);
             } else {
                 throw new MissingArgumentException("Missing task number. Format: unmark [task number from 1 to n]");
             }
@@ -150,8 +156,11 @@ public class Helper {
         String[] words = userInput.split(" ");
         if (words[0].equalsIgnoreCase("delete")) {
             if (words.length == 2) {
-                return isNumeric(words[1])
-                        && validTaskNumberForDelete(words[1]);
+
+                assert words[1] != null : "Task number string is null";
+                assert isNumeric(words[1]) : "Task number is not numeric";
+
+                return isNumeric(words[1]) && validTaskNumberForDelete(words[1]);
             } else {
                 throw new MissingArgumentException("Missing task number. Format: delete [task number from 1 to n]");
             }
@@ -367,6 +376,10 @@ public class Helper {
      */
     public static boolean isCheckDue(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
+
+        assert parts.length == 2 : "Parts length is not equal to 2";
+        assert parts[0].equalsIgnoreCase("due") : "parts[0] is not equal to 'due'";
+
         return parts[0].equalsIgnoreCase("due") && (parts.length == 2);
     }
 
@@ -403,6 +416,10 @@ public class Helper {
      */
     public static boolean isFind(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
+
+        assert parts.length == 2 : "Parts length is not equal to 2";
+        assert parts[0].equalsIgnoreCase("find") : "parts[0] is not equal to 'find'";
+
         return parts[0].equalsIgnoreCase("find") && (parts.length == 2);
     }
 
@@ -440,6 +457,10 @@ public class Helper {
      */
     public static boolean isLoadFile(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
+
+        assert parts.length == 2 : "Parts length is not equal to 2";
+        assert parts[0].equalsIgnoreCase("load") : "parts[0] is not equal to 'load'";
+
         return parts[0].equalsIgnoreCase("load") && !parts[1].isEmpty();
     }
 
