@@ -18,6 +18,7 @@ import Tasks.Todo;
  * Main class
  */
 public class Bobbodi {
+
     public static void main(String[] args) {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -35,6 +36,7 @@ public class Bobbodi {
      * getResponse for javaFX
      */
     public String getResponse(String userInput) {
+
         if (userInput.equalsIgnoreCase("bye")) {
             return (Constants.BYE);
         }
@@ -118,17 +120,24 @@ public class Bobbodi {
                         + newEvent + "\n"
                         + Helper.tasksLeft(Constants.LIST.size()));
 
+            } else if (Helper.isReminder(userInput)) {
+                String[] parts = userInput.split("\\s+", 2);
+                String day = parts[1];
+                return Constants.REMINDERS
+                        + Helper.dueInXDays(Integer.parseInt(day));
+
             } else if (!userInput.equalsIgnoreCase("bye") && !userInput.isEmpty()) {
                 Constants.LIST.add(new Task(userInput));
                 return (Constants.ADDED + userInput);
             }
+
         } catch (IncorrectFormatException | MissingArgumentException
                  | InvalidTaskNumberException | EmptyListException e) {
             return e.getMessage();
         } catch (Exception e) {
             return "An unexpected error occurred. " + e.getMessage();
         }
-        return "";
+        return "I don't understand...";
     }
     /**
      * Prints HELLO on console.

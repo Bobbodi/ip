@@ -469,4 +469,41 @@ public class Helper {
         return parts[0].equalsIgnoreCase("load") && !parts[1].isEmpty();
     }
 
+    /**
+     * Check if userinput is in format reminder [days to due date]
+     * @param userInput for userinput
+     * @return true if it is in the correct format
+     */
+    public static boolean isReminder(String userInput) {
+        String[] parts = userInput.split("\\s+", 2);
+        boolean isReminder = parts[0].equalsIgnoreCase("reminder");
+        boolean enoughParts = parts.length == 2;
+        return isReminder && enoughParts && isNumeric(parts[1]);
+    }
+
+    /**
+     * Get all the tasks that are due in 0 <= x <= days
+     * @param days upper bound
+     * @return String of all the tasks, with the number of days they are due in
+     */
+    public static String dueInXDays(int days) throws EmptyListException {
+        if (Constants.LIST.isEmpty()) {
+            throw new EmptyListException("Oops! There are no tasks!");
+        }
+        assert !Constants.LIST.isEmpty() : "LIST is empty";
+
+        LocalDate today = LocalDate.now();
+        StringBuilder listOfTasks = new StringBuilder();
+
+        for (int i = 0; i <= days; i++) {
+            LocalDate targetDate = today.plusDays(i);
+            String tasksDue = dueOnThisDay(targetDate);
+            if (!tasksDue.isEmpty()) {
+                listOfTasks.append("Due on ").append(targetDate).append(":\n");
+                listOfTasks.append(tasksDue);
+            }
+        }
+
+        return listOfTasks.toString();
+    }
 }
