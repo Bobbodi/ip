@@ -12,8 +12,8 @@ public class UserInputValidator {
      * for userinput that doesn't fall into any category
      */
     public static boolean isOthers(String userInput) {
-        return !userInput.equalsIgnoreCase("bye")
-                && !userInput.isEmpty();
+        return !userInput.trim().equalsIgnoreCase("bye")
+                && !userInput.trim().isEmpty();
     }
     /**
      * terminating condition if user says 'bye'
@@ -40,10 +40,9 @@ public class UserInputValidator {
     public static boolean isLoadFile(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
 
-        assert parts.length == 2 : "Parts length is not equal to 2";
-        assert parts[0].equalsIgnoreCase("load") : "parts[0] is not equal to 'load'";
-
-        return parts[0].equalsIgnoreCase("load") && !parts[1].isEmpty();
+        return parts[0].equalsIgnoreCase("load")
+                && parts.length > 1
+                && !parts[1].isEmpty();
     }
 
     /**
@@ -135,10 +134,9 @@ public class UserInputValidator {
     public static boolean isCheckDue(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
 
-        assert parts.length == 2 : "Parts length is not equal to 2";
-        assert parts[0].equalsIgnoreCase("due") : "parts[0] is not equal to 'due'";
-
-        return parts[0].equalsIgnoreCase("due") && (parts.length == 2);
+        return parts[0].equalsIgnoreCase("due")
+                && (parts.length == 2)
+                && (!parts[1].trim().isEmpty());
     }
 
     /**
@@ -254,10 +252,9 @@ public class UserInputValidator {
     public static boolean isFind(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
 
-        assert parts.length == 2 : "Parts length is not equal to 2";
-        assert parts[0].equalsIgnoreCase("find") : "parts[0] is not equal to 'find'";
-
-        return parts[0].equalsIgnoreCase("find") && (parts.length == 2);
+        return parts[0].equalsIgnoreCase("find")
+                && (parts.length == 2)
+                && (!parts[1].trim().isEmpty());
     }
 
 

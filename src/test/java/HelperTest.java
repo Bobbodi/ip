@@ -2,6 +2,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static resources.DateHandler.isDate;
 
 import java.time.LocalDate;
 
@@ -59,9 +60,9 @@ public class HelperTest {
     @Test
     void testIsDate_validDate() {
         //assertEquals(Helper.isDate("04-04-2024"), LocalDate.of(2024, 4, 4));
-        assertEquals(Helper.isDate(" 4/4/2024"), LocalDate.of(2024, 4, 4));
-        assertEquals(Helper.isDate("4 Apr 2024"), LocalDate.of(2024, 4, 4));
-        assertEquals(Helper.isDate("Apr 4 2024"), LocalDate.of(2024, 4, 4));
+        assertEquals(isDate(" 4/4/2024"), LocalDate.of(2024, 4, 4));
+        assertEquals(isDate("4 Apr 2024"), LocalDate.of(2024, 4, 4));
+        assertEquals(isDate("Apr 4 2024"), LocalDate.of(2024, 4, 4));
     }
 
 }
