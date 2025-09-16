@@ -1,6 +1,5 @@
 import java.util.Objects;
 
-import resources.Constants;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -11,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import resources.Constants;
 
 /**
  * Controller for main GUI

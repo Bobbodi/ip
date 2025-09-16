@@ -1,28 +1,25 @@
-package resources;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import exceptions.IncorrectFormatException;
 import exceptions.MissingArgumentException;
+import resources.Constants;
+import resources.UserInputValidator;
 import tasks.Todo;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * tests for all user input validator functions
  */
 public class UserInputValidatorTester {
 
-    private UserInputValidator validator;
-
     @BeforeEach
     void setUp() {
-        validator = new UserInputValidator();
+        UserInputValidator validator = new UserInputValidator();
     }
 
     @Test
@@ -265,28 +262,28 @@ public class UserInputValidatorTester {
     @Test
     @DisplayName("Test isDeadline with missing description")
     void testIsDeadlineMissingDescriptionThrowsException() {
-        assertThrows(MissingArgumentException.class,
-                () -> UserInputValidator.isDeadline("deadline"));
-        assertThrows(MissingArgumentException.class,
-                () -> UserInputValidator.isDeadline("deadline "));
-        assertThrows(MissingArgumentException.class,
-                () -> UserInputValidator.isDeadline("deadline /by tomorrow"));
+        assertThrows(MissingArgumentException.class, () ->
+                UserInputValidator.isDeadline("deadline"));
+        assertThrows(MissingArgumentException.class, () ->
+                UserInputValidator.isDeadline("deadline "));
+        assertThrows(MissingArgumentException.class, () ->
+                UserInputValidator.isDeadline("deadline /by tomorrow"));
     }
 
     @Test
     @DisplayName("Test isDeadline with missing /by")
     void testIsDeadlineMissingByThrowsException() {
-        assertThrows(IncorrectFormatException.class,
-                () -> UserInputValidator.isDeadline("deadline return book tomorrow"));
+        assertThrows(IncorrectFormatException.class, () ->
+                UserInputValidator.isDeadline("deadline return book tomorrow"));
     }
 
     @Test
     @DisplayName("Test isDeadline with missing by date")
     void testIsDeadlineMissingByDateThrowsException() {
-        assertThrows(MissingArgumentException.class,
-                () -> UserInputValidator.isDeadline("deadline return book /by"));
-        assertThrows(MissingArgumentException.class,
-                () -> UserInputValidator.isDeadline("deadline return book /by "));
+        assertThrows(MissingArgumentException.class, () ->
+                UserInputValidator.isDeadline("deadline return book /by"));
+        assertThrows(MissingArgumentException.class, () ->
+                UserInputValidator.isDeadline("deadline return book /by "));
     }
 
     @Test
@@ -307,40 +304,40 @@ public class UserInputValidatorTester {
     @Test
     @DisplayName("Test isEvent with missing description")
     void testIsEventMissingDescriptionThrowsException() {
-        assertThrows(MissingArgumentException.class,
-                () -> UserInputValidator.isEvent("event"));
-        assertThrows(MissingArgumentException.class,
-                () -> UserInputValidator.isEvent("event "));
-        assertThrows(MissingArgumentException.class,
-                () -> UserInputValidator.isEvent("event /from 2pm /to 4pm"));
+        assertThrows(MissingArgumentException.class, () ->
+                UserInputValidator.isEvent("event"));
+        assertThrows(MissingArgumentException.class, () ->
+                UserInputValidator.isEvent("event "));
+        assertThrows(MissingArgumentException.class, () ->
+                UserInputValidator.isEvent("event /from 2pm /to 4pm"));
     }
 
     @Test
     @DisplayName("Test isEvent with missing /from")
     void testIsEventMissingFromThrowsException() {
-        assertThrows(IncorrectFormatException.class,
-                () -> UserInputValidator.isEvent("event meeting 2pm /to 4pm"));
+        assertThrows(IncorrectFormatException.class, () ->
+                UserInputValidator.isEvent("event meeting 2pm /to 4pm"));
     }
 
     @Test
     @DisplayName("Test isEvent with missing /to")
     void testIsEventMissingToThrowsException() {
-        assertThrows(IncorrectFormatException.class,
-                () -> UserInputValidator.isEvent("event meeting /from 2pm 4pm"));
+        assertThrows(IncorrectFormatException.class, () ->
+                UserInputValidator.isEvent("event meeting /from 2pm 4pm"));
     }
 
     @Test
     @DisplayName("Test isEvent with missing from date")
     void testIsEventMissingFromDateThrowsException() {
-        assertThrows(MissingArgumentException.class,
-                () -> UserInputValidator.isEvent("event meeting /from /to 4pm"));
+        assertThrows(MissingArgumentException.class, () ->
+                UserInputValidator.isEvent("event meeting /from /to 4pm"));
     }
 
     @Test
     @DisplayName("Test isEvent with missing to date")
     void testIsEventMissingToDateThrowsException() {
-        assertThrows(MissingArgumentException.class,
-                () -> UserInputValidator.isEvent("event meeting /from 2pm /to"));
+        assertThrows(MissingArgumentException.class, () ->
+                UserInputValidator.isEvent("event meeting /from 2pm /to"));
     }
 
     @Test

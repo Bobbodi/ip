@@ -1,5 +1,3 @@
-import java.time.LocalDate;
-
 import exceptions.EmptyListException;
 import exceptions.IncorrectFormatException;
 import exceptions.InvalidTaskNumberException;
@@ -8,8 +6,8 @@ import resources.Constants;
 import resources.DateHandler;
 import resources.FileHandler;
 import resources.Helper;
-import resources.UserInputValidator;
 import resources.StringHandler;
+import resources.UserInputValidator;
 import tasks.Deadline;
 import tasks.Event;
 import tasks.Task;
@@ -76,8 +74,7 @@ public class Bobbodi {
                 return DateHandler.remind(userInput);
 
             } else if (UserInputValidator.isOthers(userInput)) {
-                Constants.LIST.add(new Task(userInput));
-                return (Constants.ADDED + userInput);
+                return Constants.CONFUSED;
             }
 
         } catch (IncorrectFormatException | MissingArgumentException
