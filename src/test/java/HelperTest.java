@@ -7,10 +7,10 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
-import Exceptions.InvalidTaskNumberException;
-import Resources.Constants;
-import Resources.Helper;
-import Tasks.Todo;
+import exceptions.InvalidTaskNumberException;
+import resources.Constants;
+import resources.Helper;
+import tasks.Todo;
 
 public class HelperTest {
     @Test

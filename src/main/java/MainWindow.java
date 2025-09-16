@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-import Resources.Constants;
+import resources.Constants;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;

@@ -1,4 +1,4 @@
-package Exceptions;
+package exceptions;
 
 /**
  * If trying to access LIST, but it is empty

@@ -1,4 +1,4 @@
-package Exceptions;
+package exceptions;
 
 /**
  * Main exception for Bobbodi

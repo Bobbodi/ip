@@ -1,4 +1,4 @@
-package Exceptions;
+package exceptions;
 
 /**
  * When creating a todo, deadline, event task, but one of the fields is missing

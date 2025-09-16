@@ -1,4 +1,4 @@
-package Exceptions;
+package exceptions;
 
 /**
  * When inputting a todo, deadline, event, task but the format is wrong

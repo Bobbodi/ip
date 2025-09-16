@@ -1,9 +1,9 @@
-package Resources;
+package resources;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Tasks.Task;
+import tasks.Task;
 
 /**
  * Declare constants that are referenced in Bobbodi class

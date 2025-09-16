@@ -1,4 +1,4 @@
-package Exceptions;
+package exceptions;
 
 /**
  * When having a task number that is not between 1 and the length of the list
