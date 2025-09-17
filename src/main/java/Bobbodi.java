@@ -10,7 +10,6 @@ import resources.StringHandler;
 import resources.UserInputValidator;
 import tasks.Deadline;
 import tasks.Event;
-import tasks.Task;
 import tasks.Todo;
 
 /**
