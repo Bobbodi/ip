@@ -24,7 +24,8 @@ public class Constants {
     public static final String LOADED = "All in!";
     public static final String DUEONTHISDAY = "Woohoo tasks due on ";
     public static final String FINDRESULTS = "Sneak peek ~";
-    public static final String REMINDERS = "Attention! Tasks due soon";
+    public static final String REMINDERS = "Attention! ";
+    public static final String NOREMINDERS = "Woohoo no tasks due ~";
     public static final String INITIALISE = HELLO + "\n\n"
             + "Want more work?\n"
             + "  - todo [description]\n"
@@ -32,11 +33,12 @@ public class Constants {
             + "  - event [description] /from [date] /to [date]\n\n"
 
             + "Manage tasks:\n"
-            + "  - list, find [keyword]\n"
-            + "  - mark/unmark [number]\n"
-            + "  - delete [number]\n"
-            + "  - check due, reminder [days]\n"
-            + "  - load file [filename]\n\n"
+            + "  - list\n"
+            + "  - find [keyword]\n"
+            + "  - mark/unmark/delete [number]\n"
+            + "  - due [date]\n"
+            + "  - reminder [days]\n"
+            + "  - load [filename]\n\n"
 
             + "Type 'bye' to exit (bye bye ~)";
 }

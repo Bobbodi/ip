@@ -15,6 +15,14 @@ public class UserInputValidator {
         return !userInput.trim().equalsIgnoreCase("bye")
                 && !userInput.trim().isEmpty();
     }
+
+    /**
+     * for userinput of 'help'
+     */
+    public static boolean isHelp(String userInput) {
+        return userInput.trim().equalsIgnoreCase("help");
+    }
+
     /**
      * terminating condition if user says 'bye'
      * @param userInput for user input

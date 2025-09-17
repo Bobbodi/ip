@@ -37,10 +37,13 @@ public class Bobbodi {
 
         try {
             if (UserInputValidator.isBye(userInput)) {
-                return (Constants.BYE);
+                return Constants.BYE;
 
             } else if (UserInputValidator.isList(userInput)) {
                 return (Helper.formatList());
+
+            } else if (UserInputValidator.isHelp(userInput)) {
+                return Constants.INITIALISE;
 
             } else if (UserInputValidator.isLoadFile(userInput)) {
                 return FileHandler.loadfile(userInput);

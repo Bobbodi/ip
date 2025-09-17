@@ -23,7 +23,7 @@ public class DateHandler {
     public static String checkDue(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
         LocalDate checkDate = isDate(parts[1]);
-        return (Constants.DUEONTHISDAY + checkDate + "\n"
+        return (Constants.DUEONTHISDAY + " " + checkDate + "\n"
                 + dueOnThisDay(checkDate));
     }
 
@@ -33,8 +33,13 @@ public class DateHandler {
     public static String remind(String userInput) {
         String[] parts = userInput.split("\\s+", 2);
         String day = parts[1];
-        return Constants.REMINDERS
-                + dueInXDays(Integer.parseInt(day));
+        String result = dueInXDays(Integer.parseInt(day));
+        if (result.isEmpty()) {
+            return Constants.NOREMINDERS;
+        } else {
+            return Constants.REMINDERS
+                    + dueInXDays(Integer.parseInt(day));
+        }
     }
 
     /**
