@@ -1,4 +1,2 @@
-T - 1 - read book
-D - 0 - return book - 6 Jun 2025
-E - 0 - project meeting - 27-Aug-2025 - 28/8/2025
-T - 1 - join sports club
+E | 0 | hello | 2025-01-01 | 2025-02-02
+D | 0 | aaa | 2025-02-02

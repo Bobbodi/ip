@@ -2,8 +2,11 @@ package resources;
 
 import static resources.DateHandler.isDate;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -12,6 +15,7 @@ import exceptions.InvalidTaskNumberException;
 import exceptions.MissingArgumentException;
 import tasks.Deadline;
 import tasks.Event;
+import tasks.Task;
 import tasks.Todo;
 
 /**
@@ -32,7 +36,7 @@ public class FileHandler {
             Scanner s = new Scanner(f);
             while (s.hasNext()) {
                 String line = s.nextLine();
-                String[] parts = line.split(" - ");
+                String[] parts = line.split(" \\| ");
                 validateFileLine(parts);
                 switch (parts[0]) {
                 case "T":
@@ -60,6 +64,7 @@ public class FileHandler {
                 }
             }
             output += (Constants.LOADED);
+            FileHandler.save();
             return output;
         } catch (FileNotFoundException e) {
             return (String.format("File %s not found", filePath));
@@ -106,8 +111,70 @@ public class FileHandler {
     public static void validateFileLineEvent(String[] parts) {
         if (parts.length < 5) {
             throw new IncorrectFormatException("Line is invalid for task type 'Event'. Please use: "
-                    + "[Task type] | [Completion status] | [Task description] | [from date] | [by date]");
+                    + "[Task type] | [Completion status] | [Task description] | [from date] | [to date]");
         }
     }
 
+    /**
+     * Reads and loads tasks from file. The filepath is relative to the base location.
+     * @param filePath is the file path relative
+     */
+    public static String load(String filePath) {
+        try {
+            String output = String.format("Reading file %s...", filePath);
+            File f = new File(filePath);
+            Scanner s = new Scanner(f);
+            while (s.hasNext()) {
+                String line = s.nextLine();
+                String[] parts = line.split(" \\| ");
+                validateFileLine(parts);
+                switch (parts[0]) {
+                case "T":
+                    Todo todo = new Todo(parts[2]);
+                    todo.setDone(parts[1]);
+                    Constants.LIST.add(todo);
+                    break;
+                case "D":
+                    validateFileLineDeadline(parts);
+                    LocalDate byDate = isDate(parts[3]);
+                    Deadline deadline = new Deadline(parts[2], byDate);
+                    deadline.setDone(parts[1]);
+                    Constants.LIST.add(deadline);
+                    break;
+                case "E":
+                    validateFileLineEvent(parts);
+                    LocalDate fromDate = isDate(parts[3]);
+                    LocalDate byDate1 = isDate(parts[4]);
+                    Event event = new Event(parts[2], fromDate, byDate1);
+                    event.setDone(parts[1]);
+                    Constants.LIST.add(event);
+                    break;
+                default:
+                    throw new IncorrectFormatException(String.format("Unknown task type %s", parts[0]));
+                }
+            }
+            output += (Constants.LOADED);
+            FileHandler.save();
+            return output;
+        } catch (FileNotFoundException e) {
+            return (String.format("File %s not found", filePath));
+        } catch (IncorrectFormatException | InvalidTaskNumberException | MissingArgumentException e) {
+            return (e.getMessage());
+        }
+    }
+
+    /**
+     * Save data in LIST into harddisk
+     */
+    public static void save() {
+        String filePath = "data.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) { //relative path
+            for (Task task : Constants.LIST) {
+                writer.write(task.writeToFile() + "\n");
+            }
+            System.out.println("Tasks saved successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

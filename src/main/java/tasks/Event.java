@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import resources.Constants;
+import resources.FileHandler;
 import resources.Helper;
 
 /**
@@ -33,6 +34,11 @@ public class Event extends Task {
      * @return String with description, from, to with formatter
      */
     public String toString() {
+        if (this.to == null) {
+            String formatted = String.format(" (on: %s)",
+                    this.from.format(DateTimeFormatter.ofPattern("MMM d yyyy")));
+            return "[E]" + super.toString() + formatted;
+        }
         String formatted = String.format(" (from: %s to: %s)",
                 this.from.format(DateTimeFormatter.ofPattern("MMM d yyyy")),
                 this.to.format(DateTimeFormatter.ofPattern("MMM d yyyy")));
@@ -64,9 +70,19 @@ public class Event extends Task {
         LocalDate toDate = isDate(to);
         Event newEvent = new Event(description, fromDate, toDate);
         Constants.LIST.add(newEvent);
-
+        FileHandler.save();
         return (Constants.ADDTASK
                 + newEvent + "\n"
                 + Helper.tasksLeft(Constants.LIST.size()));
+    }
+
+    /**
+     * Write the task to the file when application is closed
+     * @return String to be written into file
+     */
+    public String writeToFile() {
+        return "E" + " | " + (this.isDone ? "1" : "0") + " | "
+                + this.description + " | " + this.from + " | "
+                + this.to;
     }
 }

@@ -24,10 +24,6 @@ public class Bobbodi {
                 + "| |_| | |_| |   <  __/\n"
                 + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("Hello from\n" + logo);
-        //greeting();
-        //loadfile("data.txt");
-        //interact();
-        //bye();
     }
 
     /**
@@ -37,6 +33,7 @@ public class Bobbodi {
 
         try {
             if (UserInputValidator.isBye(userInput)) {
+                FileHandler.save();
                 return Constants.BYE;
 
             } else if (UserInputValidator.isList(userInput)) {

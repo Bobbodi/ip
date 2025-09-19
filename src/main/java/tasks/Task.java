@@ -52,4 +52,12 @@ public class Task {
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
     }
+
+    /**
+     * Write the task to the file when application is closed
+     * @return String to be written into file
+     */
+    public String writeToFile() {
+        return "";
+    }
 }

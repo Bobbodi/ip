@@ -1,6 +1,7 @@
 package tasks;
 
 import resources.Constants;
+import resources.FileHandler;
 import resources.Helper;
 
 /**
@@ -27,8 +28,12 @@ public class Todo extends Task {
         String description = userInput.replaceFirst("todo", "").trim();
         Todo newTodo = new Todo(description);
         Constants.LIST.add(newTodo);
-
+        FileHandler.save();
         return (Constants.ADDTASK
                 + newTodo + "\n" + Helper.tasksLeft(Constants.LIST.size()));
+    }
+
+    public String writeToFile() {
+        return "T" + " | " + (isDone ? "1" : "0") + " | " + this.description;
     }
 }

@@ -15,6 +15,7 @@ public class StringHandler {
         String[] words = userInput.split("\\s+");
         int taskNumber = Integer.parseInt(words[1]) - 1;
         Task deletedTask = Constants.LIST.remove(taskNumber);
+        FileHandler.save();
         return (Constants.REMOVETASK
                 + deletedTask + "\n"
                 + Helper.tasksLeft(Constants.LIST.size()));
@@ -27,6 +28,7 @@ public class StringHandler {
         String[] words = userInput.split("\\s+");
         int taskNumber = Integer.parseInt(words[1]) - 1;
         Constants.LIST.get(taskNumber).markNotDone();
+        FileHandler.save();
         return (Constants.MARKNOTDONE
                 + Constants.LIST.get(taskNumber));
     }
@@ -38,6 +40,7 @@ public class StringHandler {
         String[] words = userInput.split("\\s+");
         int taskNumber = Integer.parseInt(words[1]) - 1;
         Constants.LIST.get(taskNumber).markDone();
+        FileHandler.save();
         return (Constants.MARKASDONE
                 + Constants.LIST.get(taskNumber));
     }
@@ -76,4 +79,5 @@ public class StringHandler {
                 ? results.toString()
                 : "No matches...";
     }
+
 }

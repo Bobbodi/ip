@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import resources.Constants;
+import resources.FileHandler;
 
 /**
  * Controller for main GUI
@@ -38,6 +39,7 @@ public class MainWindow {
     public void initialize() {
         dialogContainer.getChildren().addAll(DialogBox.getBobbodiDialog(Constants.INITIALISE, bobImage));
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        System.out.println(FileHandler.load("data.txt"));
     }
 
     /** Injects the Duke instance */

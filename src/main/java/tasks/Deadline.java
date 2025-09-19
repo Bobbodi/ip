@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import resources.Constants;
+import resources.FileHandler;
 import resources.Helper;
 
 /**
@@ -52,10 +53,19 @@ public class Deadline extends Task {
         LocalDate byDate = isDate(by);
         Deadline newDeadline = new Deadline(description, byDate);
         Constants.LIST.add(newDeadline);
-
+        FileHandler.save();
         return (Constants.ADDTASK
                 + newDeadline + "\n"
                 + Helper.tasksLeft(Constants.LIST.size()));
+    }
+
+    /**
+     * Write the task to the file when application is closed
+     * @return String to be written into file
+     */
+    public String writeToFile() {
+        return "D" + " | " + (this.isDone ? "1" : "0") + " | "
+                + this.description + " | " + this.by;
     }
 
 }
